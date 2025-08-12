@@ -31,6 +31,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useIsMobile } from "@/hooks/use-mobile"
 
+const SyringeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="m18 2 4 4"/><path d="m17 7-2.5-2.5"/><path d="M14 4 3 15"/><path d="m19 9-4.3-4.3"/><path d="m15 13-1.5-1.5"/><path d="m11 17 5.5-5.5"/>
+    </svg>
+)
+
 const ToothIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <path d="M9.34 2.4a3.24 3.24 0 0 1 5.32 0" />
@@ -52,6 +58,7 @@ const staffNav = [
   { href: "/dentist", label: "Dentist", icon: ToothIcon },
   { href: "/service/pharmacy", label: "Pharmacy", icon: HeartPulse },
   { href: "/service/lab", label: "Lab", icon: Beaker },
+  { href: "/service/nursing", label: "Nursing", icon: SyringeIcon },
   { href: "/chairman", label: "Supervisor", icon: UserCheck },
 ]
 

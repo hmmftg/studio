@@ -15,7 +15,7 @@ import { translateText } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
 import { getCountryFlag } from "@/components/CountryFlag"
 import { Input } from "@/components/ui/input"
-import type { TranslateTextInput, CheckPrescriptionInput } from "@/app/actions/types";
+import type { TranslateTextInput, CheckPrescriptionInput } from "@/ai/types";
 
 const waitingPatientsData = [
   { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian", message: "I have a pounding headache and my vision is blurry." },
@@ -270,6 +270,10 @@ export default function DoctorPage() {
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="lab" id="r2" />
                                     <Label htmlFor="r2">Lab Test</Label>
+                                </div>
+                                 <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="nursing" id="r3" />
+                                    <Label htmlFor="r3">Nursing (Serum, Injection, etc.)</Label>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="none" id="r4" />

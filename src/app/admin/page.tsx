@@ -1,17 +1,18 @@
 "use client"
 
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { BarChart, LineChart, PieChart } from "lucide-react"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart as BarChartComponent, Line, LineChart as LineChartComponent, Pie, PieChart as PieChartComponent, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 
-const patientVolumeData = [
-  { month: "Jan", total: Math.floor(Math.random() * 200) + 100 },
-  { month: "Feb", total: Math.floor(Math.random() * 200) + 100 },
-  { month: "Mar", total: Math.floor(Math.random() * 200) + 100 },
-  { month: "Apr", total: Math.floor(Math.random() * 200) + 100 },
-  { month: "May", total: Math.floor(Math.random() * 200) + 100 },
-  { month: "Jun", total: Math.floor(Math.random() * 200) + 100 },
+const initialPatientVolumeData = [
+  { month: "Jan", total: 0 },
+  { month: "Feb", total: 0 },
+  { month: "Mar", total: 0 },
+  { month: "Apr", total: 0 },
+  { month: "May", total: 0 },
+  { month: "Jun", total: 0 },
 ];
 
 const serviceDistributionData = [
@@ -44,6 +45,19 @@ const waitingTimeConfig = {
 }
 
 export default function AdminDashboardPage() {
+  const [patientVolumeData, setPatientVolumeData] = useState(initialPatientVolumeData);
+
+  useEffect(() => {
+    // This useEffect hook runs only on the client-side, after hydration
+    // It prevents a hydration mismatch error by ensuring Math.random() is not run on the server
+    const generatedData = initialPatientVolumeData.map(item => ({
+      ...item,
+      total: Math.floor(Math.random() * 200) + 100
+    }));
+    setPatientVolumeData(generatedData);
+  }, []); // Empty dependency array ensures this runs once on mount
+
+
   return (
     <>
       <div className="space-y-4">

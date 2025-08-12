@@ -25,11 +25,12 @@ import {
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { PlusCircle } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 const initialNewPatients = [
-  { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago", nationality: "Turkish" },
-  { id: "p-002", name: "Bob Williams", phone: "555-0102", time: "5 minutes ago", nationality: "Iraqi" },
-  { id: "p-003", name: "Carol White", phone: "555-0103", time: "8 minutes ago", nationality: "Pakistani" },
+  { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago", nationality: "Turkish", service: "" },
+  { id: "p-002", name: "Bob Williams", phone: "555-0102", time: "5 minutes ago", nationality: "Iraqi", service: "" },
+  { id: "p-003", name: "Carol White", phone: "555-0103", time: "8 minutes ago", nationality: "Pakistani", service: "" },
 ]
 
 const initialQueue = [
@@ -51,6 +52,38 @@ export default function ReceptionPage() {
     const [queue, setQueue] = useState(initialQueue)
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [newPatientInfo, setNewPatientInfo] = useState({ name: '', phone: '', nationality: '' });
+    const { toast } = useToast();
+
+    const handleServiceChange = (patientId: string, service: string) => {
+        setNewPatients(prev => prev.map(p => p.id === patientId ? { ...p, service } : p))
+    };
+
+    const handleAddToQueue = (patient: typeof newPatients[0]) => {
+        if (!patient.service) {
+            toast({
+                variant: "destructive",
+                title: "Service Not Selected",
+                description: "Please select a service for the patient before adding them to the queue.",
+            });
+            return;
+        }
+
+        const newQueuedPatient = {
+            id: patient.id,
+            name: patient.name,
+            service: patient.service.charAt(0).toUpperCase() + patient.service.slice(1),
+            status: "Waiting for Doctor",
+            time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+            nationality: patient.nationality
+        };
+
+        setQueue(prev => [newQueuedPatient, ...prev]);
+        setNewPatients(prev => prev.filter(p => p.id !== patient.id));
+        toast({
+            title: "Patient Added to Queue",
+            description: `${patient.name} has been added to the ${newQueuedPatient.service} queue.`,
+        });
+    };
 
     const handleAddPatient = () => {
         if (!newPatientInfo.name || !newPatientInfo.phone || !newPatientInfo.nationality) return;
@@ -61,6 +94,7 @@ export default function ReceptionPage() {
             phone: newPatientInfo.phone,
             time: "Just now",
             nationality: newPatientInfo.nationality,
+            service: ""
         };
 
         setNewPatients(prev => [newPatient, ...prev]);
@@ -144,7 +178,7 @@ export default function ReceptionPage() {
                                     <TableCell>{getCountryFlag(patient.nationality)}</TableCell>
                                     <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.time}</TableCell>
                                     <TableCell>
-                                        <Select>
+                                        <Select value={patient.service} onValueChange={(value) => handleServiceChange(patient.id, value)}>
                                             <SelectTrigger className="w-full sm:w-[180px]">
                                                 <SelectValue placeholder="Select service" />
                                             </SelectTrigger>
@@ -155,7 +189,7 @@ export default function ReceptionPage() {
                                         </Select>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <Button size="sm">Add to Queue</Button>
+                                        <Button size="sm" onClick={() => handleAddToQueue(patient)}>Add to Queue</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

@@ -46,10 +46,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4">
-        <div className="absolute top-8 left-8">
-            <Logo />
-        </div>
+    <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg animate-in fade-in-50 zoom-in-95">
             <CardHeader className="text-center">
                 <CardTitle className="text-3xl font-headline">Join the Queue</CardTitle>

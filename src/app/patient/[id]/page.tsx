@@ -51,10 +51,7 @@ export default function PatientStatusPage({ params }: { params: { id: string }})
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-background p-4 pt-24 sm:pt-4 sm:justify-center">
-      <div className="absolute top-8 left-8">
-        <Logo />
-      </div>
+    <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center bg-background p-4">
       <Card className="w-full max-w-2xl shadow-lg animate-in fade-in-50 zoom-in-95">
         <CardHeader>
           <CardTitle className="text-2xl font-headline">Welcome, {name}!</CardTitle>

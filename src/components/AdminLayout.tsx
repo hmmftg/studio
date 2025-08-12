@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck } from "lucide-react"
+import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck, Tooth } from "lucide-react"
 
 import {
   SidebarProvider,
@@ -30,6 +30,7 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/reception", label: "Reception", icon: ClipboardList },
   { href: "/doctor", label: "Doctor", icon: Stethoscope },
+  { href: "/dentist", label: "Dentist", icon: Tooth },
   { href: "/service/pharmacy", label: "Pharmacy", icon: HeartPulse },
   { href: "/service/lab", label: "Lab", icon: Beaker },
   { href: "/chairman", label: "Chairman", icon: UserCheck },

@@ -62,13 +62,21 @@ const staffNav = [
   { href: "/chairman", label: "Supervisor", icon: UserCheck },
 ]
 
-const basePath = "/studio"
+const basePath = process.env.NODE_ENV === 'production' ? '/studio' : '';
+
+const publicPaths = ['/', '/patient', '/feedback'];
+
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isMobile = useIsMobile();
   
-  const isPublicPage = false; // This component is not used for public pages anymore
+  const isPublicPage = publicPaths.some(path => {
+    if (path.includes('[')) { // very basic check for dynamic routes
+      return pathname.startsWith(`${basePath}${path.split('[')[0]}`);
+    }
+    return pathname === `${basePath}${path === "/" ? "" : path}`;
+  });
 
   return (
     <SidebarProvider>

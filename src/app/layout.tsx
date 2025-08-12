@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { Providers } from './providers';
+import { AdminLayout } from '@/components/AdminLayout';
 
 export const metadata: Metadata = {
   title: 'MediQueue',
@@ -22,7 +23,9 @@ export default function RootLayout({
       </head>
       <body className="font-body bg-background antialiased">
         <Providers>
-            {children}
+            <AdminLayout>
+                {children}
+            </AdminLayout>
             <Toaster />
         </Providers>
       </body>

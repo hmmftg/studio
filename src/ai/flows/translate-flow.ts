@@ -7,8 +7,8 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import type { TranslateTextInput, TranslateTextOutput } from '../types';
-import { TranslateTextInputSchema, TranslateTextOutputSchema } from '../types';
+import type { TranslateTextInput, TranslateTextOutput } from '../../app/actions/types';
+import { TranslateTextInputSchema, TranslateTextOutputSchema } from '../../app/actions/types';
 
 const translateFlow = ai.defineFlow(
   {

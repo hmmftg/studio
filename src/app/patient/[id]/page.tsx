@@ -2,30 +2,53 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams, useParams } from "next/navigation"
-import { CheckCircle2, Loader, Circle, Stethoscope, FlaskConical, HeartPulse } from "lucide-react"
+import { CheckCircle2, Loader, Circle, Stethoscope, FlaskConical, HeartPulse, Send, MessageSquare } from "lucide-react"
 import Link from "next/link"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { Logo } from "@/components/Logo"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/hooks/use-translations"
+import { Input } from "@/components/ui/input"
+import { useToast } from "@/hooks/use-toast"
+import { Label } from "@/components/ui/label"
 
-const steps = [
-  { id: 1, title: "Registered", description: "You are in the system and waiting for reception.", icon: CheckCircle2 },
-  { id: 2, title: "Waiting for Doctor", description: "Reception has processed your request. Please wait for a doctor.", icon: Circle },
-  { id: 3, title: "In Consultation", description: "You are now with the doctor.", icon: Stethoscope },
-  { id: 4, title: "Service Required", description: "Please go to the designated service room with your code.", icon: FlaskConical },
-  { id: 5, title: "Completed", description: "Your visit is complete. Thank you!", icon: CheckCircle2 },
-]
 
 export default function PatientStatusPage() {
   const params = useParams()
   const searchParams = useSearchParams()
   const name = searchParams.get('name') || "Patient"
+  const nationality = searchParams.get('nationality') || "English"
+  const { t, setLocale } = useTranslations();
+  const { toast } = useToast()
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [message, setMessage] = useState('');
+  const [finalPrescription, setFinalPrescription] = useState('');
+
+  const steps = [
+    { id: 1, title: t('patient.steps.registered.title'), description: t('patient.steps.registered.description'), icon: CheckCircle2 },
+    { id: 2, title: t('patient.steps.waiting.title'), description: t('patient.steps.waiting.description'), icon: Circle },
+    { id: 3, title: t('patient.steps.consultation.title'), description: t('patient.steps.consultation.description'), icon: Stethoscope },
+    { id: 4, title: t('patient.steps.service.title'), description: t('patient.steps.service.description'), icon: FlaskConical },
+    { id: 5, title: t('patient.steps.completed.title'), description: t('patient.steps.completed.description'), icon: CheckCircle2 },
+  ]
+
+  useEffect(() => {
+    // Set locale based on nationality from query params
+    const locales: { [key: string]: 'en' | 'fa' | 'ar' | 'tr' | 'ur' } = {
+        english: 'en',
+        iranian: 'fa',
+        iraqi: 'ar',
+        turkish: 'tr',
+        pakistani: 'ur'
+    };
+    const newLocale = locales[nationality.toLowerCase() as keyof typeof locales] || 'en';
+    setLocale(newLocale);
+  }, [nationality, setLocale]);
+
 
   useEffect(() => {
     const stepDurations = [3000, 5000, 7000, 5000, 4000];
@@ -34,12 +57,27 @@ export default function PatientStatusPage() {
     const timers = stepDurations.map((duration, index) => {
       cumulativeDelay += duration;
       return setTimeout(() => {
+        if (index + 2 === 5) {
+            // Simulate receiving prescription details at the end of the visit
+            setFinalPrescription("Paracetamol 500mg, twice a day for 3 days. Take with food.");
+        }
         setCurrentStep(index + 2);
       }, cumulativeDelay);
     });
 
     return () => timers.forEach(clearTimeout);
   }, []);
+
+  const handleSendMessage = () => {
+    if (!message) return;
+    // In a real app, this would send the message to a backend.
+    // For this demo, we just show a confirmation toast.
+    toast({
+        title: "Message Sent",
+        description: "Your message has been sent to the doctor.",
+    });
+    setMessage('');
+  }
 
   const getStepVisuals = (stepId: number) => {
     if (stepId < currentStep) {
@@ -55,8 +93,8 @@ export default function PatientStatusPage() {
     <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center bg-background p-4">
       <Card className="w-full max-w-2xl shadow-lg animate-in fade-in-50 zoom-in-95">
         <CardHeader>
-          <CardTitle className="text-2xl font-headline">Welcome, {name}!</CardTitle>
-          <CardDescription>Follow your journey with us below. The status will update automatically.</CardDescription>
+          <CardTitle className="text-2xl font-headline">{t('patient.welcome')}, {name}!</CardTitle>
+          <CardDescription>{t('patient.description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
           <div>
@@ -83,22 +121,47 @@ export default function PatientStatusPage() {
 
           <Separator />
           
-          {currentStep >= 4 && (
+          {currentStep < 5 && (
+            <div className="space-y-4">
+                <div className="p-4 bg-muted/50 border rounded-lg animate-in fade-in-50">
+                    <Label htmlFor="patient-message" className="flex items-center gap-2 mb-2 font-semibold"><MessageSquare className="h-4 w-4" />{t('patient.message.title')}</Label>
+                    <p className="text-sm text-muted-foreground mb-3">{t('patient.message.description')}</p>
+                    <div className="flex w-full items-center space-x-2">
+                        <Input id="patient-message" type="text" placeholder={t('patient.message.placeholder')} value={message} onChange={(e) => setMessage(e.target.value)} />
+                        <Button type="submit" onClick={handleSendMessage} disabled={!message}><Send className="h-4 w-4" /></Button>
+                    </div>
+                </div>
+            </div>
+          )}
+
+
+          {currentStep >= 4 && !finalPrescription && (
             <div className="p-4 bg-accent/20 border border-accent rounded-lg text-center animate-in fade-in-50">
-                <h3 className="font-bold text-lg text-accent-foreground">Action Required</h3>
-                <p className="text-muted-foreground mb-2">Please proceed to the Pharmacy.</p>
-                <p className="text-sm">Your Confirmation Code is:</p>
+                <h3 className="font-bold text-lg text-accent-foreground">{t('patient.action.title')}</h3>
+                <p className="text-muted-foreground mb-2">{t('patient.action.goToPharmacy')}</p>
+                <p className="text-sm">{t('patient.action.code')}:</p>
                 <Badge variant="default" className="text-2xl font-mono tracking-widest px-4 py-2 mt-2">PH7891</Badge>
             </div>
           )}
+          
+          {finalPrescription && (
+             <div className="p-4 bg-primary/10 border border-primary/50 rounded-lg animate-in fade-in-50">
+                <h3 className="font-bold text-lg text-primary">{t('patient.prescription.title')}</h3>
+                <p className="text-muted-foreground">{t('patient.prescription.description')}</p>
+                <div className="mt-4 p-3 bg-background rounded-md">
+                    <p className="font-mono whitespace-pre-wrap">{finalPrescription}</p>
+                </div>
+            </div>
+          )}
+
 
           {currentStep === 5 && (
             <div className="text-center space-y-4 animate-in fade-in-50">
                 <HeartPulse className="mx-auto h-12 w-12 text-primary" />
-                <h3 className="font-bold text-lg">Thank You!</h3>
-                <p className="text-muted-foreground">We appreciate you visiting. Please provide your feedback to help us improve.</p>
+                <h3 className="font-bold text-lg">{t('patient.feedback.thankYou')}</h3>
+                <p className="text-muted-foreground">{t('patient.feedback.prompt')}</p>
                 <Button asChild>
-                    <Link href={`/feedback/${params.id}`}>Give Feedback</Link>
+                    <Link href={`/feedback/${params.id}`}>{t('patient.feedback.button')}</Link>
                 </Button>
             </div>
           )}

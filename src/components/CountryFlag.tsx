@@ -1,34 +1,25 @@
 import React from 'react';
 
 const IranFlag = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
-    <rect width="24" height="6" fill="#239F40"/>
-    <rect y="6" width="24" height="6" fill="#FFFFFF"/>
-    <rect y="12" width="24" height="6" fill="#DA0000"/>
-    <text x="12" y="11"
-      fontFamily="sans-serif"
-      fontSize="8"
-      textAnchor="middle"
-      fill="#DA0000"
-    >
-      الله
-    </text>
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
+        <rect width="24" height="6" y="0" fill="#239f40"/>
+        <rect width="24" height="6" y="6" fill="#fff"/>
+        <rect width="24" height="6" y="12" fill="#da0000"/>
+        <g fill="#da0000">
+            <path d="M9.1,8.1h1.4v1.8h-1.4z"/>
+            <path d="M10.5,8.1h1.4v1.8h-1.4z"/>
+            <path d="M11.9,8.1h1.4v1.8h-1.4z"/>
+            <path d="M13.2,8.1h1.6L14,9l0.8-0.9h-1.6v-0.9h3v3h-0.9v-1.6l-0.8,0.8h-0.6l-0.8-0.8v1.6h-0.9z"/>
+        </g>
+    </svg>
 );
 
 const IraqFlag = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18">
-        <rect width="24" height="6" fill="#CE1126"/>
-        <rect y="6" width="24" height="6" fill="#FFFFFF"/>
-        <rect y="12" width="24" height="6" fill="#000000"/>
-        <text x="12" y="12"
-          fontFamily="sans-serif"
-          fontSize="6"
-          textAnchor="middle"
-          fill="#007A3D"
-        >
-          الله أكبر
-        </text>
+        <rect width="24" height="18" fill="#fff"/>
+        <rect width="24" height="6" fill="#ce1126"/>
+        <rect width="24" height="6" y="12" fill="#000"/>
+        <text x="12" y="12.5" font-family="Kufi" font-size="7" text-anchor="middle" fill="#007a3d">الله أكبر</text>
     </svg>
 );
 

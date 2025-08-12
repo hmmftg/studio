@@ -18,27 +18,15 @@ import { Textarea } from "@/components/ui/textarea"
 import React from "react"
 import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Lightbulb, Languages } from "lucide-react"
+import { Lightbulb, Languages, MessageSquare } from "lucide-react"
 import { translateText } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
 import { getCountryFlag } from "@/components/CountryFlag"
-
-// Type definitions duplicated from AI flows to prevent import issues
-type TranslateTextInput = {
-  text: string;
-  targetLanguage: string;
-};
-type CheckPrescriptionInput = {
-  prescription: string;
-};
-type CheckPrescriptionOutput = {
-  isSafe: boolean;
-  advice: string;
-};
+import type { CheckPrescriptionInput, CheckPrescriptionOutput, TranslateTextInput } from "@/ai/types"
 
 
 const waitingPatientsData = [
-  { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish" },
+  { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish", message: "My front tooth is chipped and it hurts when I drink cold water." },
 ]
 
 const unavailableDrugs = ["Ibuprofen", "Amoxicillin"];
@@ -61,14 +49,14 @@ export default function DentistPage() {
         setPrescriptionAdvice(null);
     }
     
-    const handleTranslate = async () => {
-        if (!prescription || !selectedPatient) return;
+    const handleTranslate = async (textToTranslate: string, targetLanguage: string) => {
+        if (!textToTranslate) return;
         setIsTranslating(true);
         setTranslationResult('');
         try {
             const input: TranslateTextInput = {
-                text: prescription,
-                targetLanguage: selectedPatient.nationality,
+                text: textToTranslate,
+                targetLanguage: targetLanguage,
             };
             const result = await translateText(input);
             setTranslationResult(result.translation);
@@ -173,6 +161,16 @@ export default function DentistPage() {
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-6 py-4">
+                    {selectedPatient?.message && (
+                        <div className="p-3 bg-sky-100/50 rounded-md border border-sky-200">
+                             <Label className="flex items-center gap-2 text-sm font-medium"><MessageSquare className="h-4 w-4" /> Patient's Message:</Label>
+                            <p className="text-sm text-foreground/80 mt-1 italic">"{selectedPatient.message}"</p>
+                            <Button variant="link" size="sm" className="p-0 h-auto" onClick={() => handleTranslate(selectedPatient.message, "English")} disabled={isTranslating}>
+                                {isTranslating ? 'Translating...' : 'Translate to English'}
+                            </Button>
+                        </div>
+                    )}
+
                      <Alert>
                         <Lightbulb className="h-4 w-4" />
                         <AlertTitle>Pharmacy Notice</AlertTitle>
@@ -218,7 +216,7 @@ export default function DentistPage() {
                     </div>
                 </div>
                 <DialogFooter className="sm:justify-between">
-                     <Button variant="outline" onClick={handleTranslate} disabled={isTranslating || !prescription}>
+                     <Button variant="outline" onClick={() => handleTranslate(prescription, selectedPatient?.nationality || 'English')} disabled={isTranslating || !prescription}>
                         <Languages className="mr-2 h-4 w-4" />
                         {isTranslating ? 'Translating...' : `Translate to ${selectedPatient?.nationality}`}
                     </Button>

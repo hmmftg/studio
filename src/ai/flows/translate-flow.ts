@@ -6,7 +6,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { TranslateTextInputSchema, TranslateTextOutputSchema } from '../types';
+import { TranslateTextInputSchema, TranslateTextOutputSchema, type TranslateTextInput, type TranslateTextOutput } from '../types';
 
 const translationPrompt = ai.definePrompt({
     name: 'translationPrompt',
@@ -35,6 +35,6 @@ const translateFlow = ai.defineFlow(
   }
 );
 
-export async function translateText(input: import("../types").TranslateTextInput): Promise<import("../types").TranslateTextOutput> {
+export async function translateText(input: TranslateTextInput): Promise<TranslateTextOutput> {
     return translateFlow(input);
 }

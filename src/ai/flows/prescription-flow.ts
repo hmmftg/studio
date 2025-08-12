@@ -6,19 +6,7 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
-
-const CheckPrescriptionInputSchema = z.object({
-  prescription: z.string().describe('The full text of the prescription to check.'),
-});
-export type CheckPrescriptionInput = z.infer<typeof CheckPrescriptionInputSchema>;
-
-const CheckPrescriptionOutputSchema = z.object({
-  isSafe: z.boolean().describe('Whether the prescription is safe to proceed (contains no unavailable drugs).'),
-  advice: z.string().describe('Advice for the doctor if an unavailable drug is found.'),
-});
-export type CheckPrescriptionOutput = z.infer<typeof CheckPrescriptionOutputSchema>;
-
+import { CheckPrescriptionInputSchema, CheckPrescriptionOutputSchema, type CheckPrescriptionInput, type CheckPrescriptionOutput } from '../types';
 
 const UNAVAILABLE_DRUGS = ["Ibuprofen", "Amoxicillin"];
 

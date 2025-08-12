@@ -13,11 +13,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages, MessageSquare, PlusCircle, Trash2 } from "lucide-react"
 import { getCountryFlag } from "@/components/CountryFlag"
 import { Input } from "@/components/ui/input"
-import { AdminLayout } from "@/components/AdminLayout"
 
 const waitingPatientsData = [
-  { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian", message: "I have a pounding headache and my vision is blurry." },
-  { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish", message: "" },
+  { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish", message: "My front tooth is chipped and it hurts when I drink cold water." },
 ]
 
 const UNAVAILABLE_DRUGS = ["Ibuprofen", "Amoxicillin"];
@@ -30,12 +28,11 @@ type PrescriptionItem = {
     advice?: string;
 };
 
-
 // Client-side mock function for translation
 const mockTranslateText = async (text: string, targetLanguage: string): Promise<string> => {
     return new Promise(resolve => {
         setTimeout(() => {
-            if (text.includes('\n')) {
+             if (text.includes('\n')) {
                 return resolve(text.split('\n').map(segment => `[${targetLanguage}] ${segment}`).join('\n'));
             }
             resolve(`[${targetLanguage}] ${text}`);
@@ -63,7 +60,7 @@ const mockCheckPrescription = async (drugName: string): Promise<{ isSafe: boolea
 };
 
 
-export default function DoctorPage() {
+export default function DentistPage() {
     const { toast } = useToast()
     const [waitingPatients, setWaitingPatients] = useState(waitingPatientsData)
     const [selectedPatient, setSelectedPatient] = useState<(typeof waitingPatientsData)[0] | null>(null);
@@ -79,7 +76,7 @@ export default function DoctorPage() {
         setTranslationResult('');
         setPatientMessage(patient.message);
     }
-    
+
     const handleTranslate = async (textToTranslate: string, targetLanguage: string) => {
         if (!textToTranslate) return;
         setIsTranslating(true);
@@ -129,9 +126,6 @@ export default function DoctorPage() {
     const handleSubmitPrescription = () => {
         if (!selectedPatient) return;
         
-        // Logic to process and save the prescription would go here.
-        // For the demo, we just clear the state.
-        
         setWaitingPatients(prev => prev.filter(p => p.id !== selectedPatient.id));
         
         toast({
@@ -142,26 +136,25 @@ export default function DoctorPage() {
         setSelectedPatient(null);
         setPrescriptionItems([]);
     }
-    
+
     const handleCancel = () => {
         setSelectedPatient(null);
         setPrescriptionItems([]);
     }
     
-    const getPrescriptionAsString = (items: PrescriptionItem[]) => {
+     const getPrescriptionAsString = (items: PrescriptionItem[]) => {
         return items.map(p => `- ${p.drug} (${p.dosage}): ${p.notes}`).join('\n');
     }
 
   return (
-    <AdminLayout>
         <div className="space-y-4">
-            <h1 className="text-3xl font-bold tracking-tight">Doctor's Dashboard</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Dentist's Dashboard</h1>
             
             {!selectedPatient ? (
                 <Card>
                     <CardHeader>
                         <CardTitle>My Consultation Queue</CardTitle>
-                        <CardDescription>Patients waiting to be seen.</CardDescription>
+                        <CardDescription>Patients waiting for dental services.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -224,7 +217,7 @@ export default function DoctorPage() {
 
                          <div className="space-y-2">
                              <Label>Diagnosis Notes</Label>
-                             <Textarea placeholder="e.g., Patient reports headache and blurry vision..."/>
+                             <Textarea placeholder="e.g., Patient reports toothache, evidence of cavity on upper molar..."/>
                          </div>
                         
                         <div className="space-y-4">
@@ -290,15 +283,7 @@ export default function DoctorPage() {
                             <RadioGroup defaultValue="pharmacy" className="gap-2">
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="pharmacy" id="r1" />
-                                    <Label htmlFor="r1">Pharmacy (Drugs)</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="lab" id="r2" />
-                                    <Label htmlFor="r2">Lab Test</Label>
-                                </div>
-                                 <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="nursing" id="r3" />
-                                    <Label htmlFor="r3">Nursing (Serum, Injection, etc.)</Label>
+                                    <Label htmlFor="r1">Pharmacy (Painkillers)</Label>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="none" id="r4" />
@@ -322,6 +307,5 @@ export default function DoctorPage() {
                 </Card>
             )}
         </div>
-    </AdminLayout>
   )
 }

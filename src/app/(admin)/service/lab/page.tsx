@@ -7,19 +7,20 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { AdminLayout } from "@/components/AdminLayout"
 
 const queueData = [
-    { id: "p-009", name: "Ivy Potts", code: "NU1234", status: "Waiting" },
+    { id: "p-007", name: "Grace O'Malley", code: "LB4562", status: "Waiting" },
+    { id: "p-008", name: "Heidi Turner", code: "LB9901", status: "Waiting" },
 ]
 
 const patientDetailsData = {
-    NU1234: { id: "p-009", name: "Ivy Potts", details: "Administer tetanus injection." },
+    LB4562: { id: "p-007", name: "Grace O'Malley", details: "Complete Blood Count (CBC)." },
+    LB9901: { id: "p-008", name: "Heidi Turner", details: "Urinalysis." },
 }
 
 type Code = keyof typeof patientDetailsData;
 
-export default function NursingServiceRoomPage() {
+export default function LabServiceRoomPage() {
     const { toast } = useToast()
     const [code, setCode] = useState('');
     const [confirmedPatient, setConfirmedPatient] = useState<any>(null);
@@ -43,15 +44,14 @@ export default function NursingServiceRoomPage() {
     const handleCompleteService = () => {
         toast({
             title: "Service Completed",
-            description: `Nursing service for ${confirmedPatient.name} has been marked as complete.`,
+            description: `Lab service for ${confirmedPatient.name} has been marked as complete.`,
         });
         setConfirmedPatient(null);
     }
 
-    const roomName = "Nursing";
+    const roomName = "Lab";
 
     return (
-        <AdminLayout>
             <div className="space-y-4">
                 <h1 className="text-3xl font-bold tracking-tight">{roomName} Dashboard</h1>
                 
@@ -116,6 +116,5 @@ export default function NursingServiceRoomPage() {
                     </Card>
                 </div>
             </div>
-        </AdminLayout>
     )
 }

@@ -32,7 +32,6 @@ import React, { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { getCountryFlag } from "@/components/CountryFlag"
 import { Textarea } from "@/components/ui/textarea"
-import { AdminLayout } from "@/components/AdminLayout"
 
 const patientJourneyData = [
   { id: "p-001", name: "Alice Johnson", nationality: "Turkish", currentStep: "Waiting for Doctor", details: "Assigned to Healthcare Queue", issues: 0, doctorId: "d-001", notes: "", emergency: false },
@@ -98,7 +97,6 @@ export default function SupervisorPage() {
     };
 
   return (
-    <AdminLayout>
       <div className="space-y-8">
         <h1 className="text-3xl font-bold tracking-tight">Supervisor's Dashboard</h1>
         
@@ -236,7 +234,5 @@ export default function SupervisorPage() {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
-
-    </AdminLayout>
   )
 }

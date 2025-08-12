@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { BarChart, LineChart, PieChart } from "lucide-react"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart as BarChartComponent, Line, LineChart as LineChartComponent, Pie, PieChart as PieChartComponent, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
-import { AdminLayout } from '@/components/AdminLayout';
 
 const initialPatientVolumeData = [
   { month: "Jan", total: 0 },
@@ -60,7 +59,6 @@ export default function AdminDashboardPage() {
 
 
   return (
-    <AdminLayout>
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         <p className="text-muted-foreground">High-level overview of clinic resources and activities.</p>
@@ -148,6 +146,5 @@ export default function AdminDashboardPage() {
             </Card>
         </div>
       </div>
-    </AdminLayout>
   )
 }

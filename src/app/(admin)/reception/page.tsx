@@ -26,7 +26,6 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { PlusCircle } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { AdminLayout } from "@/components/AdminLayout"
 
 const initialNewPatients = [
   { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago", nationality: "Turkish", service: "" },
@@ -105,7 +104,6 @@ export default function ReceptionPage() {
 
 
   return (
-    <AdminLayout>
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Reception Dashboard</h1>
         <div className="grid gap-8 pt-4">
@@ -231,6 +229,5 @@ export default function ReceptionPage() {
             </Card>
         </div>
       </div>
-    </AdminLayout>
   )
 }

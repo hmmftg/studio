@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Logo } from "@/components/Logo"
 import { Button } from "./ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,20 +64,10 @@ const staffNav = [
 
 const basePath = process.env.NODE_ENV === 'production' ? '/studio' : '';
 
-const publicPaths = ['/', '/patient', '/feedback'];
-
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isMobile = useIsMobile();
-  
-  const isPublicPage = publicPaths.some(path => {
-    if (path.includes('[')) { // very basic check for dynamic routes
-      const base = path.split('[')[0];
-      return pathname.startsWith(`${basePath}${base}`);
-    }
-    return pathname === `${basePath}${path === "/" ? "" : path}`;
-  });
 
   return (
     <SidebarProvider>
@@ -134,26 +124,24 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2">
                  {isMobile && <SidebarTrigger />}
             </div>
-            {!isPublicPage && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                        <Avatar>
-                            <AvatarImage src="https://placehold.co/150x150.png" alt="Admin" data-ai-hint="woman hijab" />
-                            <AvatarFallback>A</AvatarFallback>
-                        </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar>
+                        <AvatarImage src="https://placehold.co/150x150.png" alt="Admin" data-ai-hint="woman hijab" />
+                        <AvatarFallback>A</AvatarFallback>
+                    </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Support</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
         </header>
         <main className="p-4 sm:p-6 lg:p-8">
             {children}

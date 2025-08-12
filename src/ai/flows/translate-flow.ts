@@ -6,22 +6,9 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { TranslateTextInputSchema, TranslateTextOutputSchema, type TranslateTextInput, type TranslateTextOutput } from '../types';
-
-const translationPrompt = ai.definePrompt({
-    name: 'translationPrompt',
-    input: { schema: TranslateTextInputSchema },
-    output: { schema: TranslateTextOutputSchema },
-    prompt: `Translate the following text into the specified target language.
-
-If the text contains "&&" as a separator, translate each segment separately and preserve the "&&" separator in the output.
-
-Text to translate: {{{text}}}
-Target Language: {{{targetLanguage}}}
-
-Provide only the translated text in the 'translation' field of the output.`,
-});
-
+import { z } from 'zod';
+import type { TranslateTextInput, TranslateTextOutput } from '../types';
+import { TranslateTextInputSchema, TranslateTextOutputSchema } from '../types';
 
 const translateFlow = ai.defineFlow(
   {
@@ -30,8 +17,18 @@ const translateFlow = ai.defineFlow(
     outputSchema: TranslateTextOutputSchema,
   },
   async (input) => {
-    const { output } = await translationPrompt(input);
-    return output!;
+    // This is a mock translation for the prototype.
+    // It returns the original text with a "[Translated]" prefix.
+    const mockTranslation = (text: string) => {
+        if (text.includes('&&')) {
+            return text.split('&&').map(segment => `[${input.targetLanguage}] ${segment}`).join('&&');
+        }
+        return `[${input.targetLanguage}] ${text}`;
+    }
+
+    return {
+        translation: mockTranslation(input.text)
+    };
   }
 );
 

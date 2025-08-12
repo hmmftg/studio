@@ -14,8 +14,8 @@ import { Lightbulb, Languages, MessageSquare, PlusCircle, Trash2 } from "lucide-
 import { translateText } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
 import { getCountryFlag } from "@/components/CountryFlag"
-import type { CheckPrescriptionInput, TranslateTextInput } from "@/ai/types"
 import { Input } from "@/components/ui/input"
+import type { TranslateTextInput, CheckPrescriptionInput } from "@/app/actions/types";
 
 const waitingPatientsData = [
   { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian", message: "I have a pounding headache and my vision is blurry." },
@@ -31,6 +31,7 @@ type PrescriptionItem = {
     notes: string;
     advice?: string;
 };
+
 
 export default function DoctorPage() {
     const { toast } = useToast()

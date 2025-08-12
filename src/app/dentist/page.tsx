@@ -14,8 +14,8 @@ import { Lightbulb, Languages, MessageSquare, PlusCircle, Trash2 } from "lucide-
 import { translateText } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
 import { getCountryFlag } from "@/components/CountryFlag"
-import type { CheckPrescriptionInput, CheckPrescriptionOutput, TranslateTextInput } from "@/ai/types"
 import { Input } from "@/components/ui/input"
+import type { TranslateTextInput, CheckPrescriptionInput } from "@/app/actions/types";
 
 const waitingPatientsData = [
   { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish", message: "My front tooth is chipped and it hurts when I drink cold water." },
@@ -30,6 +30,7 @@ type PrescriptionItem = {
     notes: string;
     advice?: string;
 };
+
 
 export default function DentistPage() {
     const { toast } = useToast()

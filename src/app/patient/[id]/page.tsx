@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { translateText } from "@/ai/flows/translate-flow"
-import { TranslateTextInput } from "@/ai/types"
+import type { TranslateTextInput } from "@/app/actions/types";
 
 
 type PrescriptionItem = {

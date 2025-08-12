@@ -52,7 +52,7 @@ const staffNav = [
   { href: "/dentist", label: "Dentist", icon: ToothIcon },
   { href: "/service/pharmacy", label: "Pharmacy", icon: HeartPulse },
   { href: "/service/lab", label: "Lab", icon: Beaker },
-  { href: "/chairman", label: "Chairman", icon: UserCheck },
+  { href: "/chairman", label: "Supervisor", icon: UserCheck },
 ]
 
 const publicPaths = ["/", "/patient/demo-patient-123", "/feedback/demo-patient-123"];

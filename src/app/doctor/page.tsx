@@ -13,6 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages, MessageSquare, PlusCircle, Trash2 } from "lucide-react"
 import { getCountryFlag } from "@/components/CountryFlag"
 import { Input } from "@/components/ui/input"
+import { AdminLayout } from "@/components/AdminLayout"
 
 const waitingPatientsData = [
   { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian", message: "I have a pounding headache and my vision is blurry." },
@@ -152,7 +153,7 @@ export default function DoctorPage() {
     }
 
   return (
-    <>
+    <AdminLayout>
         <div className="space-y-4">
             <h1 className="text-3xl font-bold tracking-tight">Doctor's Dashboard</h1>
             
@@ -321,6 +322,6 @@ export default function DoctorPage() {
                 </Card>
             )}
         </div>
-    </>
+    </AdminLayout>
   )
 }

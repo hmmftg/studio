@@ -1,15 +1,12 @@
 import type {NextConfig} from 'next';
 
-const isProd = process.env.NODE_ENV === 'production';
 const repo = 'studio';
-const assetPrefix = isProd ? `/${repo}/` : undefined;
-const basePath = isProd ? `/${repo}` : undefined;
 
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'export',
-  assetPrefix: assetPrefix,
-  basePath: basePath,
+  assetPrefix: `/${repo}/`,
+  basePath: `/${repo}`,
   typescript: {
     ignoreBuildErrors: true,
   },

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { PlusCircle } from "lucide-react"
+import { AdminLayout } from "@/components/AdminLayout"
 
 const queueData = [
     { id: "p-006", name: "Frank Martin", code: "PH7891", status: "Waiting" },
@@ -70,7 +71,7 @@ export default function PharmacyServiceRoomPage() {
     const roomName = "Pharmacy";
 
     return (
-        <>
+        <AdminLayout>
             <div className="space-y-4">
                 <div className="flex justify-between items-center">
                     <h1 className="text-3xl font-bold tracking-tight">{roomName} Dashboard</h1>
@@ -164,6 +165,6 @@ export default function PharmacyServiceRoomPage() {
                     </Card>
                 </div>
             </div>
-        </>
+        </AdminLayout>
     )
 }

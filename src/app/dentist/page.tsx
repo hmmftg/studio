@@ -13,6 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages, MessageSquare, PlusCircle, Trash2 } from "lucide-react"
 import { getCountryFlag } from "@/components/CountryFlag"
 import { Input } from "@/components/ui/input"
+import { AdminLayout } from "@/components/AdminLayout"
 
 const waitingPatientsData = [
   { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish", message: "My front tooth is chipped and it hurts when I drink cold water." },
@@ -147,7 +148,7 @@ export default function DentistPage() {
     }
 
   return (
-    <>
+    <AdminLayout>
         <div className="space-y-4">
             <h1 className="text-3xl font-bold tracking-tight">Dentist's Dashboard</h1>
             
@@ -308,6 +309,6 @@ export default function DentistPage() {
                 </Card>
             )}
         </div>
-    </>
+    </AdminLayout>
   )
 }

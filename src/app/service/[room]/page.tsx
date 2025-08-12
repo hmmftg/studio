@@ -1,4 +1,5 @@
 import ServiceRoom from "./ServiceRoom";
+import { AdminLayout } from "@/components/AdminLayout";
 
 export async function generateStaticParams() {
   return [
@@ -9,5 +10,9 @@ export async function generateStaticParams() {
 }
 
 export default function ServiceRoomPage() {
-    return <ServiceRoom />;
+    return (
+        <AdminLayout>
+            <ServiceRoom />
+        </AdminLayout>
+    );
 }

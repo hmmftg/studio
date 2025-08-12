@@ -62,17 +62,13 @@ const staffNav = [
   { href: "/chairman", label: "Supervisor", icon: UserCheck },
 ]
 
-const publicPaths = ["/", "/patient", "/feedback"];
+const basePath = "/studio"
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isMobile = useIsMobile();
   
-  const isPublicPage = publicPaths.some(path => {
-      if (path === "/") return pathname === path
-      return pathname.startsWith(path)
-  });
-
+  const isPublicPage = false; // This component is not used for public pages anymore
 
   return (
     <SidebarProvider>
@@ -90,7 +86,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
                     asChild
-                    isActive={item.href === "/" ? pathname === item.href : pathname.startsWith(item.href)}
+                    isActive={pathname === `${basePath}${item.href === "/" ? "" : item.href}`}
                     tooltip={item.label}
                     >
                     <Link href={item.href}>
@@ -110,7 +106,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
                     asChild
-                    isActive={pathname.startsWith(item.href)}
+                    isActive={pathname.startsWith(`${basePath}${item.href}`)}
                     tooltip={item.label}
                     >
                     <Link href={item.href}>

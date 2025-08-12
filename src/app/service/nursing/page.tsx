@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import { AdminLayout } from "@/components/AdminLayout"
 
 const queueData = [
     { id: "p-009", name: "Ivy Potts", code: "NU1234", status: "Waiting" },
@@ -50,7 +51,7 @@ export default function NursingServiceRoomPage() {
     const roomName = "Nursing";
 
     return (
-        <>
+        <AdminLayout>
             <div className="space-y-4">
                 <h1 className="text-3xl font-bold tracking-tight">{roomName} Dashboard</h1>
                 
@@ -115,6 +116,6 @@ export default function NursingServiceRoomPage() {
                     </Card>
                 </div>
             </div>
-        </>
+        </AdminLayout>
     )
 }

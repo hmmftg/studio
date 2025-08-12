@@ -73,7 +73,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   
   const isPublicPage = publicPaths.some(path => {
     if (path.includes('[')) { // very basic check for dynamic routes
-      return pathname.startsWith(`${basePath}${path.split('[')[0]}`);
+      const base = path.split('[')[0];
+      return pathname.startsWith(`${basePath}${base}`);
     }
     return pathname === `${basePath}${path === "/" ? "" : path}`;
   });
@@ -138,7 +139,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                         <Avatar>
-                            <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Admin" />
+                            <AvatarImage src="https://placehold.co/150x150.png" alt="Admin" data-ai-hint="woman hijab" />
                             <AvatarFallback>A</AvatarFallback>
                         </Avatar>
                     </Button>

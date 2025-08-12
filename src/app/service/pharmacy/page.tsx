@@ -7,8 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { Lightbulb } from "lucide-react"
 
 const queueData = [
     { id: "p-006", name: "Frank Martin", code: "PH7891", status: "Waiting" },
@@ -17,8 +15,6 @@ const queueData = [
 const patientDetailsData = {
     PH7891: { id: "p-006", name: "Frank Martin", details: "Paracetamol 500mg, twice a day for 3 days." },
 }
-
-const unavailableDrugs = ["Ibuprofen", "Amoxicillin"];
 
 type Code = keyof typeof patientDetailsData;
 
@@ -58,14 +54,6 @@ export default function PharmacyServiceRoomPage() {
             <div className="space-y-4">
                 <h1 className="text-3xl font-bold tracking-tight">{roomName} Dashboard</h1>
                 
-                <Alert>
-                    <Lightbulb className="h-4 w-4" />
-                    <AlertTitle>Notice for Doctors</AlertTitle>
-                    <AlertDescription>
-                        The following drugs are currently unavailable: <strong>{unavailableDrugs.join(", ")}</strong>. Please advise doctors to prescribe alternatives.
-                    </AlertDescription>
-                </Alert>
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-4">
                     <Card>
                         <CardHeader>

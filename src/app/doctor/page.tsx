@@ -22,11 +22,15 @@ import { Lightbulb, Languages } from "lucide-react"
 import { translateText, type TranslateTextInput } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
 import type { CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/types"
+import { getCountryFlag } from "@/components/CountryFlag"
 
 const waitingPatientsData = [
   { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian" },
   { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish" },
 ]
+
+const unavailableDrugs = ["Ibuprofen", "Amoxicillin"];
+
 
 export default function DoctorPage() {
     const { toast } = useToast()
@@ -129,7 +133,7 @@ export default function DoctorPage() {
                                 {waitingPatients.length > 0 ? waitingPatients.map(patient => (
                                     <TableRow key={patient.id}>
                                         <TableCell className="font-medium">{patient.name}</TableCell>
-                                        <TableCell>{patient.nationality}</TableCell>
+                                        <TableCell>{getCountryFlag(patient.nationality)}</TableCell>
                                         <TableCell><Badge variant="secondary">{patient.service}</Badge></TableCell>
                                         <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.waitingFor}</TableCell>
                                         <TableCell className="text-right">
@@ -153,11 +157,19 @@ export default function DoctorPage() {
                 <DialogHeader>
                     <DialogTitle>Consultation: {selectedPatient?.name}</DialogTitle>
                     <DialogDescription>
-                       Patient Nationality: <span className="font-semibold">{selectedPatient?.nationality}</span>. 
+                       Patient Nationality: <span className="font-semibold flex items-center gap-2">{getCountryFlag(selectedPatient?.nationality || '')} {selectedPatient?.nationality}</span>. 
                        Record diagnosis and prescribe the next steps.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-6 py-4">
+                    <Alert>
+                        <Lightbulb className="h-4 w-4" />
+                        <AlertTitle>Pharmacy Notice</AlertTitle>
+                        <AlertDescription>
+                            Unavailable drugs: <strong>{unavailableDrugs.join(", ")}</strong>. Please prescribe alternatives.
+                        </AlertDescription>
+                    </Alert>
+                    
                     <div className="grid gap-2">
                         <Label htmlFor="prescription">Details & Prescription</Label>
                         <Textarea id="prescription" placeholder="e.g., Patient reports headache, prescribe Paracetamol..." rows={4} value={prescription} onChange={handlePrescriptionChange} />

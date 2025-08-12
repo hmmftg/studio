@@ -1,0 +1,13 @@
+{
+    "registration": {
+        "title": "به صف بپیوندید",
+        "description": "برای ثبت نام در مشاوره، اطلاعات خود را در زیر وارد کنید.",
+        "nameLabel": "نام کامل",
+        "namePlaceholder": "مثلا جان دو",
+        "phoneLabel": "شماره تلفن",
+        "phonePlaceholder": "مثلا (123) 456-7890",
+        "nationalityLabel": "ملیت",
+        "nationalityPlaceholder": "ملیت خود را انتخاب کنید",
+        "submitButton": "ثبت نام کنید و جای من را ببینید"
+    }
+}

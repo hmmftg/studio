@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { getCountryFlag } from "@/components/CountryFlag"
 
 const newPatients = [
   { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago", nationality: "Turkish" },
@@ -49,7 +50,7 @@ export default function ReceptionPage() {
                             {newPatients.map(patient => (
                                 <TableRow key={patient.id}>
                                     <TableCell className="font-medium">{patient.name}</TableCell>
-                                    <TableCell>{patient.nationality}</TableCell>
+                                    <TableCell>{getCountryFlag(patient.nationality)}</TableCell>
                                     <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.time}</TableCell>
                                     <TableCell>
                                         <Select>
@@ -91,7 +92,7 @@ export default function ReceptionPage() {
                             {queue.map(patient => (
                                 <TableRow key={patient.id}>
                                     <TableCell className="font-medium">{patient.name}</TableCell>
-                                    <TableCell>{patient.nationality}</TableCell>
+                                    <TableCell>{getCountryFlag(patient.nationality)}</TableCell>
                                     <TableCell>{patient.service}</TableCell>
                                     <TableCell>
                                         <Badge variant="secondary">{patient.status}</Badge>

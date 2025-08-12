@@ -23,6 +23,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import React, { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
+import { getCountryFlag } from "@/components/CountryFlag"
 
 
 const patientJourneyData = [
@@ -86,7 +87,7 @@ export default function ChairmanPage() {
                         {journeys.map(patient => (
                             <TableRow key={patient.id} className={patient.issues > 0 ? "bg-destructive/10" : ""}>
                                 <TableCell className="font-medium">{patient.name}</TableCell>
-                                <TableCell>{patient.nationality}</TableCell>
+                                <TableCell>{getCountryFlag(patient.nationality)}</TableCell>
                                 <TableCell><Badge variant="outline">{patient.currentStep}</Badge></TableCell>
                                 <TableCell className="text-muted-foreground">{patient.details}</TableCell>
                                 <TableCell>

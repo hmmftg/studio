@@ -1,0 +1,13 @@
+{
+    "registration": {
+        "title": "انضم إلى الطابور",
+        "description": "أدخل بياناتك أدناه للتسجيل في استشارة.",
+        "nameLabel": "الاسم الكامل",
+        "namePlaceholder": "مثال: جون دو",
+        "phoneLabel": "رقم الهاتف",
+        "phonePlaceholder": "مثال: (123) 456-7890",
+        "nationalityLabel": "الجنسية",
+        "nationalityPlaceholder": "اختر جنسيتك",
+        "submitButton": "سجل وشاهد مكاني"
+    }
+}

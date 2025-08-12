@@ -17,6 +17,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useI18n, useSetLocale } from "@/locales/client"
+import { getCountryFlag } from "@/components/CountryFlag"
+
+const nationalities = [
+    { value: "iranian", label: "Iranian", locale: "fa" },
+    { value: "iraqi", label: "Iraqi", locale: "ar" },
+    { value: "turkish", label: "Turkish", locale: "tr" },
+    { value: "pakistani", label: "Pakistani", locale: "ur" },
+    { value: "english", label: "English", locale: "en" },
+];
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -32,6 +42,9 @@ const formSchema = z.object({
 
 export default function Home() {
   const router = useRouter()
+  const t = useI18n()
+  const setLocale = useSetLocale()
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,12 +65,20 @@ export default function Home() {
     router.push(`/patient/${patientId}?${queryParams.toString()}`)
   }
 
+  const handleNationalityChange = (value: string) => {
+    form.setValue('nationality', value)
+    const selected = nationalities.find(n => n.value === value)
+    if (selected) {
+        setLocale(selected.locale as 'en' | 'fa' | 'ar' | 'tr' | 'ur')
+    }
+  }
+
   return (
     <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center p-4">
         <Card className="w-full max-w-md shadow-lg animate-in fade-in-50 zoom-in-95">
             <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-headline">Join the Queue</CardTitle>
-                <CardDescription>Enter your details below to register for a consultation.</CardDescription>
+                <CardTitle className="text-3xl font-headline">{t('registration.title')}</CardTitle>
+                <CardDescription>{t('registration.description')}</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
@@ -67,9 +88,9 @@ export default function Home() {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Full Name</FormLabel>
+                                    <FormLabel>{t('registration.nameLabel')}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="e.g., John Doe" {...field} />
+                                        <Input placeholder={t('registration.namePlaceholder')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -80,9 +101,9 @@ export default function Home() {
                             name="phone"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Phone Number</FormLabel>
+                                    <FormLabel>{t('registration.phoneLabel')}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="e.g., (123) 456-7890" {...field} />
+                                        <Input placeholder={t('registration.phonePlaceholder')} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -93,25 +114,29 @@ export default function Home() {
                             name="nationality"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Nationality</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormLabel>{t('registration.nationalityLabel')}</FormLabel>
+                                    <Select onValueChange={handleNationalityChange} defaultValue={field.value}>
                                         <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select your nationality" />
+                                            <SelectValue placeholder={t('registration.nationalityPlaceholder')} />
                                         </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="iranian">Iranian</SelectItem>
-                                            <SelectItem value="iraqi">Iraqi</SelectItem>
-                                            <SelectItem value="turkish">Turkish</SelectItem>
-                                            <SelectItem value="pakistani">Pakistani</SelectItem>
+                                            {nationalities.map(nat => (
+                                                <SelectItem key={nat.value} value={nat.value}>
+                                                   <div className="flex items-center gap-2">
+                                                        {getCountryFlag(nat.label)}
+                                                        <span>{nat.label}</span>
+                                                    </div>
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit" className="w-full !mt-8">Register and See My Place</Button>
+                        <Button type="submit" className="w-full !mt-8">{t('registration.submitButton')}</Button>
                     </form>
                 </Form>
             </CardContent>

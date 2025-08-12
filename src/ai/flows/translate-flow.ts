@@ -3,23 +3,10 @@
  * @fileOverview A flow for translating text into different languages.
  *
  * - translateText - A function that handles the translation.
- * - TranslateTextInput - The input type for the translation function.
- * - TranslateTextOutput - The return type for the translation function.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
-
-const TranslateTextInputSchema = z.object({
-  text: z.string().describe('The text to be translated.'),
-  targetLanguage: z.string().describe('The target language (e.g., Iranian, Iraqi, Turkish, Pakistani).'),
-});
-export type TranslateTextInput = z.infer<typeof TranslateTextInputSchema>;
-
-const TranslateTextOutputSchema = z.object({
-  translation: z.string().describe('The translated text.'),
-});
-export type TranslateTextOutput = z.infer<typeof TranslateTextOutputSchema>;
+import { TranslateTextInputSchema, TranslateTextOutputSchema, type TranslateTextInput, type TranslateTextOutput } from '@/ai/types';
 
 
 const translationPrompt = ai.definePrompt({

@@ -19,8 +19,9 @@ import React from "react"
 import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages } from "lucide-react"
-import { translateText, TranslateTextInput } from "@/ai/flows/translate-flow"
-import { checkPrescription, CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/flows/prescription-flow"
+import { translateText, type TranslateTextInput } from "@/ai/flows/translate-flow"
+import { checkPrescription } from "@/ai/flows/prescription-flow"
+import type { CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/types"
 
 const waitingPatientsData = [
   { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian" },
@@ -76,7 +77,8 @@ export default function DoctorPage() {
         if (newPrescription.length > 20) { // aribtrary length to avoid too many calls
             setIsCheckingPrescription(true);
             try {
-                const result = await checkPrescription({ prescription: newPrescription });
+                const input: CheckPrescriptionInput = { prescription: newPrescription };
+                const result = await checkPrescription(input);
                 if (!result.isSafe) {
                     setPrescriptionAdvice(result);
                 }

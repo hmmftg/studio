@@ -3,26 +3,12 @@
  * @fileOverview A flow for checking drug prescriptions against available stock.
  *
  * - checkPrescription - A function that checks for unavailable drugs.
- * - CheckPrescriptionInput - The input type for the check function.
- * - CheckPrescriptionOutput - The return type for the check function.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
+import { CheckPrescriptionInputSchema, CheckPrescriptionOutputSchema, type CheckPrescriptionInput, type CheckPrescriptionOutput } from '@/ai/types';
 
 const UNAVAILABLE_DRUGS = ["Ibuprofen", "Amoxicillin"];
-
-export const CheckPrescriptionInputSchema = z.object({
-  prescription: z.string().describe('The full text of the prescription to check.'),
-});
-export type CheckPrescriptionInput = z.infer<typeof CheckPrescriptionInputSchema>;
-
-export const CheckPrescriptionOutputSchema = z.object({
-  isSafe: z.boolean().describe('Whether the prescription is safe to proceed (contains no unavailable drugs).'),
-  advice: z.string().describe('Advice for the doctor if an unavailable drug is found.'),
-});
-export type CheckPrescriptionOutput = z.infer<typeof CheckPrescriptionOutputSchema>;
-
 
 const prescriptionCheckPrompt = ai.definePrompt({
     name: 'prescriptionCheckPrompt',

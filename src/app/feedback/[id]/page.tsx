@@ -11,6 +11,10 @@ import { Logo } from "@/components/Logo"
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
+export async function generateStaticParams() {
+  return [{ id: 'demo-patient-123' }];
+}
+
 export default function FeedbackPage() {
   const [rating, setRating] = useState(0)
   const [submitted, setSubmitted] = useState(false)

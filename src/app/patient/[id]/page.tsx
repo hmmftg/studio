@@ -30,6 +30,9 @@ const finalPrescriptionData: PrescriptionItem[] = [
     { drug: "Saline Nasal Spray", dosage: "2 sprays per nostril", notes: "Use every 4-6 hours as needed" }
 ];
 
+export async function generateStaticParams() {
+  return [{ id: 'demo-patient-123' }];
+}
 
 export default function PatientStatusPage() {
   const params = useParams()

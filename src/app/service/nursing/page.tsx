@@ -89,7 +89,7 @@ export default function NursingServiceRoomPage() {
                         <CardHeader>
                             <CardTitle>Waiting Queue</CardTitle>
                              <CardDescription>Patients waiting for {roomName} services.</CardDescription>
-                        </CardHeader>
+                        </Header>
                         <CardContent>
                             <Table>
                                 <TableHeader>

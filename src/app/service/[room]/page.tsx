@@ -16,7 +16,8 @@ const queueData = {
     lab: [
         { id: "p-007", name: "Grace O'Malley", code: "LB4562", status: "Waiting" },
         { id: "p-008", name: "Heidi Turner", code: "LB9901", status: "Waiting" },
-    ]
+    ],
+    nursing: []
 }
 
 const patientDetailsData = {
@@ -27,6 +28,14 @@ const patientDetailsData = {
 
 type Room = keyof typeof queueData;
 type Code = keyof typeof patientDetailsData;
+
+export async function generateStaticParams() {
+  return [
+    { room: 'pharmacy' },
+    { room: 'lab' },
+    { room: 'nursing' },
+  ];
+}
 
 export default function ServiceRoomPage() {
     const params = useParams()

@@ -1,6 +1,5 @@
 "use client"
 
-import { AdminLayout } from "@/components/AdminLayout"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import {
@@ -26,7 +25,7 @@ const queue = [
 
 export default function ReceptionPage() {
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Reception Dashboard</h1>
         <div className="grid gap-8 pt-4">
@@ -105,6 +104,6 @@ export default function ReceptionPage() {
             </Card>
         </div>
       </div>
-    </AdminLayout>
+    </>
   )
 }

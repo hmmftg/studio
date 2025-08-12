@@ -1,6 +1,5 @@
 "use client"
 
-import { AdminLayout } from "@/components/AdminLayout"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
@@ -63,7 +62,7 @@ export default function ChairmanPage() {
 
 
   return (
-    <AdminLayout>
+    <>
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Chairman's Dashboard</h1>
         <Card>
@@ -151,6 +150,6 @@ export default function ChairmanPage() {
             </DialogContent>
         </Dialog>
 
-    </AdminLayout>
+    </>
   )
 }

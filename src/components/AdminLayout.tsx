@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck } from "lucide-react"
+import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck, ShieldCheck, MessageSquare, ListChecks } from "lucide-react"
 
 import {
   SidebarProvider,
@@ -13,6 +13,9 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { Logo } from "@/components/Logo"
 import { Button } from "./ui/button"
@@ -34,7 +37,13 @@ const ToothIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 )
 
-const navItems = [
+const patientNav = [
+  { href: "/", label: "Patient Registration", icon: User },
+  { href: "/patient/demo-patient-123?name=Demo%20User&nationality=Turkish", label: "Patient View", icon: ListChecks },
+  { href: "/feedback/demo-patient-123", label: "Feedback", icon: MessageSquare },
+]
+
+const staffNav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/reception", label: "Reception", icon: ClipboardList },
   { href: "/doctor", label: "Doctor", icon: Stethoscope },
@@ -57,20 +66,43 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
-            {navItems.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname === item.href}
-                  tooltip={item.label}
-                >
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            <SidebarGroup>
+                <SidebarGroupLabel>Patient</SidebarGroupLabel>
+                {patientNav.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    tooltip={item.label}
+                    >
+                    <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                    </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                ))}
+            </SidebarGroup>
+
+            <SidebarSeparator />
+            
+            <SidebarGroup>
+                 <SidebarGroupLabel>Staff & Admin</SidebarGroupLabel>
+                {staffNav.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                    asChild
+                    isActive={pathname.startsWith(item.href)}
+                    tooltip={item.label}
+                    >
+                    <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                    </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                ))}
+            </SidebarGroup>
           </SidebarMenu>
         </SidebarContent>
       </Sidebar>

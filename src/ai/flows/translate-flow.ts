@@ -6,8 +6,18 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { TranslateTextInputSchema, TranslateTextOutputSchema } from '@/ai/types';
-import type { TranslateTextInput, TranslateTextOutput } from '@/ai/types';
+import { z } from 'zod';
+
+const TranslateTextInputSchema = z.object({
+  text: z.string().describe('The text to be translated.'),
+  targetLanguage: z.string().describe('The target language (e.g., Iranian, Iraqi, Turkish, Pakistani).'),
+});
+export type TranslateTextInput = z.infer<typeof TranslateTextInputSchema>;
+
+const TranslateTextOutputSchema = z.object({
+  translation: z.string().describe('The translated text.'),
+});
+export type TranslateTextOutput = z.infer<typeof TranslateTextOutputSchema>;
 
 
 const translationPrompt = ai.definePrompt({
@@ -19,7 +29,7 @@ const translationPrompt = ai.definePrompt({
 Text to translate: {{{text}}}
 Target Language: {{{targetLanguage}}}
 
-Provide only the translated text.`,
+Provide only the translated text in the 'translation' field of the output.`,
 });
 
 

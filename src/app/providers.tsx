@@ -1,17 +1,15 @@
 "use client"
 
-import { I18nProvider } from '@/locales/client';
+import { TranslationsProvider } from '@/hooks/use-translations';
 
 export function Providers({
   children,
-  locale
 }: Readonly<{
   children: React.ReactNode;
-  locale: string;
 }>) {
   return (
-    <I18nProvider locale={locale}>
+    <TranslationsProvider>
       {children}
-    </I18nProvider>
+    </TranslationsProvider>
   );
 }

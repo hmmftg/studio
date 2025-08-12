@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useI18n, useSetLocale } from "@/locales/client"
+import { useTranslations } from "@/hooks/use-translations"
 import { getCountryFlag } from "@/components/CountryFlag"
 
 const nationalities = [
@@ -42,8 +42,7 @@ const formSchema = z.object({
 
 export default function Home() {
   const router = useRouter()
-  const t = useI18n()
-  const setLocale = useSetLocale()
+  const { t, setLocale } = useTranslations()
 
 
   const form = useForm<z.infer<typeof formSchema>>({

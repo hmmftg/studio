@@ -21,8 +21,20 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages } from "lucide-react"
 import { translateText } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
-import type { TranslateTextInput, CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/types"
 import { getCountryFlag } from "@/components/CountryFlag"
+
+// Type definitions duplicated from AI flows to prevent import issues
+type TranslateTextInput = {
+  text: string;
+  targetLanguage: string;
+};
+type CheckPrescriptionInput = {
+  prescription: string;
+};
+type CheckPrescriptionOutput = {
+  isSafe: boolean;
+  advice: string;
+};
 
 
 const waitingPatientsData = [

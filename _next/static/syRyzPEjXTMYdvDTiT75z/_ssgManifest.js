@@ -1,0 +1,1 @@
+self.__SSG_MANIFEST=new Set(["\u002Ffeedback\u002F[id]","\u002Fpatient\u002F[id]","\u002Fservice\u002F[room]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()

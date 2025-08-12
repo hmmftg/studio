@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 
 import { Logo } from "@/components/Logo"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -16,7 +16,7 @@ const mainNav = [
     { href: "/feedback/demo-patient-123", label: "Feedback" },
 ]
 
-const adminRoutes = ["/admin", "/reception", "/doctor", "/service", "/chairman"];
+const adminRoutes = ["/admin", "/reception", "/doctor", "/dentist", "/service", "/chairman"];
 
 export function Header() {
     const pathname = usePathname()
@@ -43,9 +43,10 @@ export function Header() {
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="left" className="w-[300px] p-0">
-                                <div className="p-4">
+                                <SheetHeader className="p-4">
+                                    <SheetTitle className="sr-only">Menu</SheetTitle>
                                     <Logo />
-                                </div>
+                                </SheetHeader>
                                 <nav className="grid gap-2 p-4">
                                     {mainNav.map((item) => (
                                         <Link

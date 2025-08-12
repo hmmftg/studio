@@ -47,7 +47,7 @@ const ToothIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const patientNav = [
   { href: "/", label: "Patient Registration", icon: User },
-  { href: "/patient/demo-patient-123?name=Demo%20User&nationality=Turkish", label: "Patient View", icon: ListChecks },
+  { href: "/patient/demo-patient-123", label: "Patient View", icon: ListChecks },
   { href: "/feedback/demo-patient-123", label: "Feedback", icon: MessageSquare },
 ]
 
@@ -62,19 +62,15 @@ const staffNav = [
   { href: "/chairman", label: "Supervisor", icon: UserCheck },
 ]
 
-const publicPaths = ["/", "/patient/demo-patient-123", "/feedback/demo-patient-123"];
+const publicPaths = ["/", "/patient", "/feedback"];
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isMobile = useIsMobile();
   
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
-
   const isPublicPage = publicPaths.some(path => {
-      const fullPath = `${basePath}${path}`.replace(/\/$/, '');
-      const currentPath = pathname.replace(/\/$/, '');
-      const dynamicPathRegex = new RegExp(`^${fullPath.replace(/\[.*?\]/g, '[^/]+')}$`);
-      return dynamicPathRegex.test(currentPath.split('?')[0]);
+      if (path === "/") return pathname === path
+      return pathname.startsWith(path)
   });
 
 
@@ -94,7 +90,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
                     asChild
-                    isActive={pathname === item.href}
+                    isActive={item.href === "/" ? pathname === item.href : pathname.startsWith(item.href)}
                     tooltip={item.label}
                     >
                     <Link href={item.href}>

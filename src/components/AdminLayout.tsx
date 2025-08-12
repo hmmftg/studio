@@ -67,8 +67,15 @@ const publicPaths = ["/", "/patient/demo-patient-123", "/feedback/demo-patient-1
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isMobile = useIsMobile();
+  
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
-  const isPublicPage = publicPaths.some(path => pathname.startsWith(path.split('?')[0]) && (path.includes('?') ? pathname.includes('?') : true));
+  const isPublicPage = publicPaths.some(path => {
+      const fullPath = `${basePath}${path}`.replace(/\/$/, '');
+      const currentPath = pathname.replace(/\/$/, '');
+      const dynamicPathRegex = new RegExp(`^${fullPath.replace(/\[.*?\]/g, '[^/]+')}$`);
+      return dynamicPathRegex.test(currentPath.split('?')[0]);
+  });
 
 
   return (

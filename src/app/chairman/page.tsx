@@ -132,15 +132,15 @@ export default function ChairmanPage() {
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">Name</Label>
-                        <Input id="name" value={selectedPatient?.name} onChange={(e) => setSelectedPatient(p => p ? {...p, name: e.target.value} : null)} className="col-span-3" />
+                        <Input id="name" value={selectedPatient?.name || ""} onChange={(e) => setSelectedPatient(p => p ? {...p, name: e.target.value} : null)} className="col-span-3" />
                     </div>
                      <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="currentStep" className="text-right">Current Step</Label>
-                        <Input id="currentStep" value={selectedPatient?.currentStep}  onChange={(e) => setSelectedPatient(p => p ? {...p, currentStep: e.target.value} : null)} className="col-span-3" />
+                        <Input id="currentStep" value={selectedPatient?.currentStep || ""}  onChange={(e) => setSelectedPatient(p => p ? {...p, currentStep: e.target.value} : null)} className="col-span-3" />
                     </div>
                      <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="details" className="text-right">Details</Label>
-                        <Input id="details" value={selectedPatient?.details}  onChange={(e) => setSelectedPatient(p => p ? {...p, details: e.target.value} : null)} className="col-span-3" />
+                        <Input id="details" value={selectedPatient?.details || ""}  onChange={(e) => setSelectedPatient(p => p ? {...p, details: e.target.value} : null)} className="col-span-3" />
                     </div>
                 </div>
                 <DialogFooter>

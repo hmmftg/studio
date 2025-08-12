@@ -18,26 +18,81 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea"
 import React from "react"
 import { useToast } from "@/hooks/use-toast"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Lightbulb, Languages } from "lucide-react"
+import { translateText, TranslateTextInput } from "@/ai/flows/translate-flow"
+import { checkPrescription, CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/flows/prescription-flow"
 
 const waitingPatientsData = [
-  { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins" },
-  { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins" },
+  { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian" },
+  { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish" },
 ]
 
 export default function DoctorPage() {
     const { toast } = useToast()
     const [waitingPatients, setWaitingPatients] = React.useState(waitingPatientsData)
     const [selectedPatient, setSelectedPatient] = React.useState<(typeof waitingPatientsData)[0] | null>(null);
+    const [prescription, setPrescription] = React.useState('');
+    const [isTranslating, setIsTranslating] = React.useState(false);
+    const [translationResult, setTranslationResult] = React.useState('');
+    const [prescriptionAdvice, setPrescriptionAdvice] = React.useState<CheckPrescriptionOutput | null>(null);
+    const [isCheckingPrescription, setIsCheckingPrescription] = React.useState(false);
+
 
     const handleAccept = (patient: (typeof waitingPatientsData)[0]) => {
         setSelectedPatient(patient);
+        setPrescription('');
+        setTranslationResult('');
+        setPrescriptionAdvice(null);
     }
     
+    const handleTranslate = async () => {
+        if (!prescription || !selectedPatient) return;
+        setIsTranslating(true);
+        setTranslationResult('');
+        try {
+            const input: TranslateTextInput = {
+                text: prescription,
+                targetLanguage: selectedPatient.nationality,
+            };
+            const result = await translateText(input);
+            setTranslationResult(result.translation);
+        } catch (error) {
+            console.error("Translation failed", error);
+            toast({
+                variant: "destructive",
+                title: "Translation Error",
+                description: "Could not translate the text.",
+            });
+        } finally {
+            setIsTranslating(false);
+        }
+    };
+
+    const handlePrescriptionChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newPrescription = e.target.value;
+        setPrescription(newPrescription);
+        setPrescriptionAdvice(null);
+
+        if (newPrescription.length > 20) { // aribtrary length to avoid too many calls
+            setIsCheckingPrescription(true);
+            try {
+                const result = await checkPrescription({ prescription: newPrescription });
+                if (!result.isSafe) {
+                    setPrescriptionAdvice(result);
+                }
+            } catch (error) {
+                console.error("Prescription check failed", error);
+            } finally {
+                setIsCheckingPrescription(false);
+            }
+        }
+    };
+
+
     const handleSubmitPrescription = () => {
         if (!selectedPatient) return;
         
-        // In a real app, this would trigger backend operations.
-        // Here, we'll just simulate the frontend changes.
         setWaitingPatients(prev => prev.filter(p => p.id !== selectedPatient.id));
         
         toast({
@@ -63,6 +118,7 @@ export default function DoctorPage() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Name</TableHead>
+                                    <TableHead>Nationality</TableHead>
                                     <TableHead>Service</TableHead>
                                     <TableHead className="hidden sm:table-cell">Waiting Time</TableHead>
                                     <TableHead className="text-right">Action</TableHead>
@@ -72,6 +128,7 @@ export default function DoctorPage() {
                                 {waitingPatients.length > 0 ? waitingPatients.map(patient => (
                                     <TableRow key={patient.id}>
                                         <TableCell className="font-medium">{patient.name}</TableCell>
+                                        <TableCell>{patient.nationality}</TableCell>
                                         <TableCell><Badge variant="secondary">{patient.service}</Badge></TableCell>
                                         <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.waitingFor}</TableCell>
                                         <TableCell className="text-right">
@@ -80,7 +137,7 @@ export default function DoctorPage() {
                                     </TableRow>
                                 )) : (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="text-center h-24">No patients waiting</TableCell>
+                                        <TableCell colSpan={5} className="text-center h-24">No patients waiting</TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
@@ -95,14 +152,33 @@ export default function DoctorPage() {
                 <DialogHeader>
                     <DialogTitle>Consultation: {selectedPatient?.name}</DialogTitle>
                     <DialogDescription>
-                       Record diagnosis and prescribe the next steps for the patient.
+                       Patient Nationality: <span className="font-semibold">{selectedPatient?.nationality}</span>. 
+                       Record diagnosis and prescribe the next steps.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-6 py-4">
                     <div className="grid gap-2">
                         <Label htmlFor="prescription">Details & Prescription</Label>
-                        <Textarea id="prescription" placeholder="e.g., Patient reports headache, prescribe Paracetamol..." rows={4} />
+                        <Textarea id="prescription" placeholder="e.g., Patient reports headache, prescribe Paracetamol..." rows={4} value={prescription} onChange={handlePrescriptionChange} />
+                        {isCheckingPrescription && <p className="text-xs text-muted-foreground">Checking prescription...</p>}
+                        {prescriptionAdvice && (
+                             <Alert variant="destructive">
+                                <Lightbulb className="h-4 w-4" />
+                                <AlertTitle>Suggestion</AlertTitle>
+                                <AlertDescription>
+                                    {prescriptionAdvice.advice}
+                                </AlertDescription>
+                            </Alert>
+                        )}
                     </div>
+
+                    {translationResult && (
+                        <div className="p-3 bg-muted rounded-md">
+                            <Label className="text-sm font-medium">Translation:</Label>
+                            <p className="text-sm">{translationResult}</p>
+                        </div>
+                    )}
+
                     <div className="grid gap-3">
                          <Label>Required Service</Label>
                         <RadioGroup defaultValue="pharmacy" className="gap-2">
@@ -121,9 +197,15 @@ export default function DoctorPage() {
                         </RadioGroup>
                     </div>
                 </div>
-                <DialogFooter>
-                    <Button variant="outline" onClick={() => setSelectedPatient(null)}>Cancel</Button>
-                    <Button onClick={handleSubmitPrescription}>Submit & Notify Service</Button>
+                <DialogFooter className="sm:justify-between">
+                     <Button variant="outline" onClick={handleTranslate} disabled={isTranslating || !prescription}>
+                        <Languages className="mr-2 h-4 w-4" />
+                        {isTranslating ? 'Translating...' : `Translate to ${selectedPatient?.nationality}`}
+                    </Button>
+                    <div className="flex gap-2">
+                        <Button variant="outline" onClick={() => setSelectedPatient(null)}>Cancel</Button>
+                        <Button onClick={handleSubmitPrescription}>Submit & Notify Service</Button>
+                    </div>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

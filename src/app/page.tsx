@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Logo } from "@/components/Logo"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -24,6 +24,9 @@ const formSchema = z.object({
   }),
   phone: z.string().min(10, {
     message: "Please enter a valid phone number.",
+  }),
+  nationality: z.string({
+    required_error: "Please select a nationality.",
   }),
 })
 
@@ -40,9 +43,13 @@ export default function Home() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // In a real app, this would save data and return a unique patient ID.
-    // For this demo, we use a static ID and pass the name in the query.
+    // For this demo, we use a static ID and pass the data in the query.
     const patientId = "demo-patient-123"
-    router.push(`/patient/${patientId}?name=${encodeURIComponent(values.name)}`)
+    const queryParams = new URLSearchParams({
+        name: values.name,
+        nationality: values.nationality
+    });
+    router.push(`/patient/${patientId}?${queryParams.toString()}`)
   }
 
   return (
@@ -77,6 +84,29 @@ export default function Home() {
                                     <FormControl>
                                         <Input placeholder="e.g., (123) 456-7890" {...field} />
                                     </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                         <FormField
+                            control={form.control}
+                            name="nationality"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Nationality</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select your nationality" />
+                                        </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="iranian">Iranian</SelectItem>
+                                            <SelectItem value="iraqi">Iraqi</SelectItem>
+                                            <SelectItem value="turkish">Turkish</SelectItem>
+                                            <SelectItem value="pakistani">Pakistani</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}

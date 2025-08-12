@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClipboardList, Stethoscope, Beaker, HeartPulse, User } from "lucide-react"
+import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck } from "lucide-react"
 
 import {
   SidebarProvider,
@@ -27,10 +27,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 const navItems = [
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/reception", label: "Reception", icon: ClipboardList },
   { href: "/doctor", label: "Doctor", icon: Stethoscope },
   { href: "/service/pharmacy", label: "Pharmacy", icon: HeartPulse },
   { href: "/service/lab", label: "Lab", icon: Beaker },
+  { href: "/chairman", label: "Chairman", icon: UserCheck },
 ]
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -50,7 +52,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname.startsWith(item.href)}
+                  isActive={pathname === item.href}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>

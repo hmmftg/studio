@@ -14,14 +14,14 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
 const newPatients = [
-  { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago" },
-  { id: "p-002", name: "Bob Williams", phone: "555-0102", time: "5 minutes ago" },
-  { id: "p-003", name: "Carol White", phone: "555-0103", time: "8 minutes ago" },
+  { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago", nationality: "Turkish" },
+  { id: "p-002", name: "Bob Williams", phone: "555-0102", time: "5 minutes ago", nationality: "Iraqi" },
+  { id: "p-003", name: "Carol White", phone: "555-0103", time: "8 minutes ago", nationality: "Pakistani" },
 ]
 
 const queue = [
-  { id: "p-004", name: "David Green", service: "Healthcare", status: "Waiting for Doctor", time: "10:32 AM" },
-  { id: "p-005", name: "Eve Black", service: "Dentistry", status: "Waiting for Doctor", time: "10:35 AM" },
+  { id: "p-004", name: "David Green", service: "Healthcare", status: "Waiting for Doctor", time: "10:32 AM", nationality: "Iranian" },
+  { id: "p-005", name: "Eve Black", service: "Dentistry", status: "Waiting for Doctor", time: "10:35 AM", nationality: "Turkish" },
 ]
 
 export default function ReceptionPage() {
@@ -40,8 +40,8 @@ export default function ReceptionPage() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Name</TableHead>
-                                <TableHead className="hidden sm:table-cell">Phone</TableHead>
-                                <TableHead className="hidden md:table-cell">Registered</TableHead>
+                                <TableHead>Nationality</TableHead>
+                                <TableHead className="hidden sm:table-cell">Registered</TableHead>
                                 <TableHead>Service</TableHead>
                                 <TableHead className="text-right">Action</TableHead>
                             </TableRow>
@@ -50,8 +50,8 @@ export default function ReceptionPage() {
                             {newPatients.map(patient => (
                                 <TableRow key={patient.id}>
                                     <TableCell className="font-medium">{patient.name}</TableCell>
-                                    <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.phone}</TableCell>
-                                    <TableCell className="hidden md:table-cell text-muted-foreground">{patient.time}</TableCell>
+                                    <TableCell>{patient.nationality}</TableCell>
+                                    <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.time}</TableCell>
                                     <TableCell>
                                         <Select>
                                             <SelectTrigger className="w-full sm:w-[180px]">
@@ -83,20 +83,20 @@ export default function ReceptionPage() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Name</TableHead>
+                                <TableHead>Nationality</TableHead>
                                 <TableHead>Service</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead className="hidden sm:table-cell">Time</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {queue.map(patient => (
                                 <TableRow key={patient.id}>
                                     <TableCell className="font-medium">{patient.name}</TableCell>
+                                    <TableCell>{patient.nationality}</TableCell>
                                     <TableCell>{patient.service}</TableCell>
                                     <TableCell>
                                         <Badge variant="secondary">{patient.status}</Badge>
                                     </TableCell>
-                                    <TableCell className="hidden sm:table-cell text-muted-foreground">{patient.time}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

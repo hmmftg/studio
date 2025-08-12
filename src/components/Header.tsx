@@ -10,20 +10,18 @@ import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const mainNav = [
-    { href: "/", label: "Home (Patient Registration)" },
-    { href: "/patient/demo-patient-123?name=Demo%20User", label: "Patient View" },
-    { href: "/reception", label: "Reception View" },
-    { href: "/doctor", label: "Doctor View" },
-    { href: "/service/pharmacy", label: "Pharmacy View" },
-    { href: "/service/lab", label: "Lab View" },
+    { href: "/", label: "Patient Registration" },
+    { href: "/patient/demo-patient-123?name=Demo%20User&nationality=Turkish", label: "Patient View" },
+    { href: "/admin", label: "Admin/Staff View" },
     { href: "/feedback/demo-patient-123", label: "Feedback" },
 ]
 
+const adminRoutes = ["/admin", "/reception", "/doctor", "/service", "/chairman"];
 
 export function Header() {
     const pathname = usePathname()
 
-    const isAdminRoute = mainNav.some(item => item.href.startsWith('/reception') || item.href.startsWith('/doctor') || item.href.startsWith('/service')) && (pathname.startsWith('/reception') || pathname.startsWith('/doctor') || pathname.startsWith('/service'));
+    const isAdminRoute = adminRoutes.some(route => pathname.startsWith(route));
 
     if (isAdminRoute) {
         return null;
@@ -44,7 +42,7 @@ export function Header() {
                                     <span className="sr-only">Toggle Menu</span>
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="w-[300px]">
+                            <SheetContent side="left" className="w-[300px] p-0">
                                 <div className="p-4">
                                     <Logo />
                                 </div>

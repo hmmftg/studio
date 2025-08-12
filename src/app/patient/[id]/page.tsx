@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useParams } from "next/navigation"
 import { CheckCircle2, Loader, Circle, Stethoscope, FlaskConical, HeartPulse } from "lucide-react"
 import Link from "next/link"
 
@@ -20,7 +20,8 @@ const steps = [
   { id: 5, title: "Completed", description: "Your visit is complete. Thank you!", icon: CheckCircle2 },
 ]
 
-export default function PatientStatusPage({ params }: { params: { id: string }}) {
+export default function PatientStatusPage() {
+  const params = useParams()
   const searchParams = useSearchParams()
   const name = searchParams.get('name') || "Patient"
 

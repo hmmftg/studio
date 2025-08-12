@@ -15,9 +15,6 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { TranslateTextInput } from "@/app/actions/types";
-import { translateText } from "@/app/actions/translateActions"
-
 
 type PrescriptionItem = {
     drug: string;
@@ -29,6 +26,19 @@ const finalPrescriptionData: PrescriptionItem[] = [
     { drug: "Paracetamol", dosage: "500mg, twice a day", notes: "Take with food for 3 days" },
     { drug: "Saline Nasal Spray", dosage: "2 sprays per nostril", notes: "Use every 4-6 hours as needed" }
 ];
+
+// Client-side mock function for translation
+const mockTranslateText = async (text: string, targetLanguage: string): Promise<string> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            if (text.includes('&&')) {
+                return resolve(text.split('&&').map(segment => `[${targetLanguage}] ${segment}`).join('&&'));
+            }
+            resolve(`[${targetLanguage}] ${text}`);
+        }, 500);
+    });
+};
+
 
 export default function PatientStatus() {
   const params = useParams()
@@ -101,9 +111,8 @@ export default function PatientStatus() {
         const translatedItems: PrescriptionItem[] = [];
         for (const item of finalPrescription) {
             const textToTranslate = `${item.drug}&&${item.dosage}&&${item.notes}`;
-            const input: TranslateTextInput = { text: textToTranslate, targetLanguage: nationality };
-            const result = await translateText(input);
-            const [drug, dosage, notes] = result.translation.split('&&');
+            const result = await mockTranslateText(textToTranslate, nationality);
+            const [drug, dosage, notes] = result.split('&&');
             translatedItems.push({ drug, dosage, notes });
         }
         setTranslatedPrescription(translatedItems);

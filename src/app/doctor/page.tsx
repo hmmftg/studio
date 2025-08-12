@@ -13,17 +13,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages, MessageSquare, PlusCircle, Trash2 } from "lucide-react"
 import { getCountryFlag } from "@/components/CountryFlag"
 import { Input } from "@/components/ui/input"
-import type { TranslateTextInput, CheckPrescriptionInput } from "@/app/actions/types";
-import { translateText } from "@/app/actions/translateActions";
-import { checkPrescription } from "@/app/actions/prescriptionActions";
-
 
 const waitingPatientsData = [
   { id: "p-003", name: "Charlie Brown", service: "Healthcare", time: "10:32 AM", waitingFor: "15 mins", nationality: "Iranian", message: "I have a pounding headache and my vision is blurry." },
   { id: "p-004", name: "Diana Prince", service: "Dentistry", time: "10:35 AM", waitingFor: "12 mins", nationality: "Turkish", message: "" },
 ]
 
-const unavailableDrugs = ["Ibuprofen", "Amoxicillin"];
+const UNAVAILABLE_DRUGS = ["Ibuprofen", "Amoxicillin"];
 
 type PrescriptionItem = {
     id: number;
@@ -31,6 +27,38 @@ type PrescriptionItem = {
     dosage: string;
     notes: string;
     advice?: string;
+};
+
+
+// Client-side mock function for translation
+const mockTranslateText = async (text: string, targetLanguage: string): Promise<string> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            if (text.includes('\n')) {
+                return resolve(text.split('\n').map(segment => `[${targetLanguage}] ${segment}`).join('\n'));
+            }
+            resolve(`[${targetLanguage}] ${text}`);
+        }, 500);
+    });
+};
+
+// Client-side mock function for prescription check
+const mockCheckPrescription = async (drugName: string): Promise<{ isSafe: boolean; advice: string }> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            const lowerCasePrescription = drugName.toLowerCase();
+            const unavailableDrug = UNAVAILABLE_DRUGS.find(drug => lowerCasePrescription.includes(drug.toLowerCase()));
+
+            if (unavailableDrug) {
+                resolve({ 
+                    isSafe: false, 
+                    advice: `The drug "${unavailableDrug}" is currently unavailable. Please prescribe an alternative.` 
+                });
+            } else {
+                resolve({ isSafe: true, advice: "" });
+            }
+        }, 300);
+    });
 };
 
 
@@ -56,12 +84,8 @@ export default function DoctorPage() {
         setIsTranslating(true);
         setTranslationResult('');
         try {
-            const input: TranslateTextInput = {
-                text: textToTranslate,
-                targetLanguage: targetLanguage,
-            };
-            const result = await translateText(input);
-            setTranslationResult(result.translation);
+            const result = await mockTranslateText(textToTranslate, targetLanguage);
+            setTranslationResult(result);
         } catch (error) {
             console.error("Translation failed", error);
             toast({
@@ -82,8 +106,7 @@ export default function DoctorPage() {
         if (drugName.length < 3) return;
         setIsCheckingPrescription(true);
         try {
-            const input: CheckPrescriptionInput = { prescription: drugName };
-            const result = await checkPrescription(input);
+            const result = await mockCheckPrescription(drugName);
             if (!result.isSafe) {
                 setPrescriptionItems(items => items.map(item => item.id === id ? { ...item, advice: result.advice } : item));
             }
@@ -194,7 +217,7 @@ export default function DoctorPage() {
                             <Lightbulb className="h-4 w-4" />
                             <AlertTitle>Pharmacy Notice</AlertTitle>
                             <AlertDescription>
-                                Unavailable drugs: <strong>{unavailableDrugs.join(", ")}</strong>. Please prescribe alternatives.
+                                Unavailable drugs: <strong>{UNAVAILABLE_DRUGS.join(", ")}</strong>. Please prescribe alternatives.
                             </AlertDescription>
                         </Alert>
 

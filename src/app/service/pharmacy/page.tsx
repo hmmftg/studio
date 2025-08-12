@@ -101,7 +101,7 @@ export default function PharmacyServiceRoomPage() {
                         <CardHeader>
                             <CardTitle>Waiting Queue</CardTitle>
                              <CardDescription>Patients waiting for {roomName} services.</CardDescription>
-                        </Header>
+                        </CardHeader>
                         <CardContent>
                             <Table>
                                 <TableHeader>

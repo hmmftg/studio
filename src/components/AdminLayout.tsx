@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck, ShieldCheck, MessageSquare, ListChecks } from "lucide-react"
+import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck, MessageSquare, ListChecks } from "lucide-react"
 
 import {
   SidebarProvider,
@@ -16,6 +16,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarSeparator,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Logo } from "@/components/Logo"
 import { Button } from "./ui/button"
@@ -28,6 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const ToothIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -53,8 +55,14 @@ const staffNav = [
   { href: "/chairman", label: "Chairman", icon: UserCheck },
 ]
 
+const publicPaths = ["/", "/patient/demo-patient-123", "/feedback/demo-patient-123"];
+
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const isMobile = useIsMobile();
+
+  const isPublicPage = publicPaths.some(path => pathname.startsWith(path.split('?')[0]) && (path.includes('?') ? pathname.includes('?') : true));
+
 
   return (
     <SidebarProvider>
@@ -107,25 +115,30 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-16 items-center justify-end p-4 border-b bg-card">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar>
-                        <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Admin" />
-                        <AvatarFallback>A</AvatarFallback>
-                    </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        <header className="flex h-16 items-center justify-between p-4 border-b bg-card">
+            <div className="flex items-center gap-2">
+                 {isMobile && <SidebarTrigger />}
+            </div>
+            {!isPublicPage && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                        <Avatar>
+                            <AvatarImage src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Admin" />
+                            <AvatarFallback>A</AvatarFallback>
+                        </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>Support</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+            )}
         </header>
         <main className="p-4 sm:p-6 lg:p-8">
             {children}

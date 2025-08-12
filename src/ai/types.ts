@@ -12,6 +12,7 @@ export const CheckPrescriptionOutputSchema = z.object({
 });
 export type CheckPrescriptionOutput = z.infer<typeof CheckPrescriptionOutputSchema>;
 
+
 // Translate Flow
 export const TranslateTextInputSchema = z.object({
   text: z.string().describe('The text to be translated.'),

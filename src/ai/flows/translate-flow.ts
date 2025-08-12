@@ -6,7 +6,8 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { TranslateTextInputSchema, TranslateTextOutputSchema, type TranslateTextInput, type TranslateTextOutput } from '@/ai/types';
+import { TranslateTextInputSchema, TranslateTextOutputSchema } from '@/ai/types';
+import type { TranslateTextInput, TranslateTextOutput } from '@/ai/types';
 
 
 const translationPrompt = ai.definePrompt({

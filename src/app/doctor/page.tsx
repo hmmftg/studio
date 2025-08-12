@@ -19,9 +19,9 @@ import React from "react"
 import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Lightbulb, Languages } from "lucide-react"
-import { translateText, type TranslateTextInput } from "@/ai/flows/translate-flow"
+import { translateText } from "@/ai/flows/translate-flow"
 import { checkPrescription } from "@/ai/flows/prescription-flow"
-import type { CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/types"
+import type { TranslateTextInput, CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/types"
 import { getCountryFlag } from "@/components/CountryFlag"
 
 const waitingPatientsData = [

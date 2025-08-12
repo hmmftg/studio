@@ -6,7 +6,8 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { CheckPrescriptionInputSchema, CheckPrescriptionOutputSchema, type CheckPrescriptionInput, type CheckPrescriptionOutput } from '@/ai/types';
+import { CheckPrescriptionInputSchema, CheckPrescriptionOutputSchema } from '@/ai/types';
+import type { CheckPrescriptionInput, CheckPrescriptionOutput } from '@/ai/types';
 
 const UNAVAILABLE_DRUGS = ["Ibuprofen", "Amoxicillin"];
 

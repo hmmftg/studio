@@ -6,25 +6,15 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
-
-const TranslateTextInputSchema = z.object({
-  text: z.string().describe('The text to be translated.'),
-  targetLanguage: z.string().describe('The target language (e.g., Iranian, Iraqi, Turkish, Pakistani).'),
-});
-export type TranslateTextInput = z.infer<typeof TranslateTextInputSchema>;
-
-const TranslateTextOutputSchema = z.object({
-  translation: z.string().describe('The translated text.'),
-});
-export type TranslateTextOutput = z.infer<typeof TranslateTextOutputSchema>;
-
+import { TranslateTextInputSchema, TranslateTextOutputSchema } from '../types';
 
 const translationPrompt = ai.definePrompt({
     name: 'translationPrompt',
     input: { schema: TranslateTextInputSchema },
     output: { schema: TranslateTextOutputSchema },
     prompt: `Translate the following text into the specified target language.
+
+If the text contains "&&" as a separator, translate each segment separately and preserve the "&&" separator in the output.
 
 Text to translate: {{{text}}}
 Target Language: {{{targetLanguage}}}
@@ -45,6 +35,6 @@ const translateFlow = ai.defineFlow(
   }
 );
 
-export async function translateText(input: TranslateTextInput): Promise<TranslateTextOutput> {
+export async function translateText(input: import("../types").TranslateTextInput): Promise<import("../types").TranslateTextOutput> {
     return translateFlow(input);
 }

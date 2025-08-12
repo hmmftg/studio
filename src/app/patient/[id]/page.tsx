@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams, useParams } from "next/navigation"
-import { CheckCircle2, Loader, Circle, Stethoscope, FlaskConical, HeartPulse, Send, MessageSquare } from "lucide-react"
+import { CheckCircle2, Loader, Circle, Stethoscope, FlaskConical, HeartPulse, Send, MessageSquare, Languages } from "lucide-react"
 import Link from "next/link"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -14,6 +14,21 @@ import { useTranslations } from "@/hooks/use-translations"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { Label } from "@/components/ui/label"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { translateText } from "@/ai/flows/translate-flow"
+import { TranslateTextInput } from "@/ai/types"
+
+
+type PrescriptionItem = {
+    drug: string;
+    dosage: string;
+    notes: string;
+};
+
+const finalPrescriptionData: PrescriptionItem[] = [
+    { drug: "Paracetamol", dosage: "500mg, twice a day", notes: "Take with food for 3 days" },
+    { drug: "Saline Nasal Spray", dosage: "2 sprays per nostril", notes: "Use every 4-6 hours as needed" }
+];
 
 
 export default function PatientStatusPage() {
@@ -26,7 +41,9 @@ export default function PatientStatusPage() {
 
   const [currentStep, setCurrentStep] = useState(1);
   const [message, setMessage] = useState('');
-  const [finalPrescription, setFinalPrescription] = useState('');
+  const [finalPrescription, setFinalPrescription] = useState<PrescriptionItem[]>([]);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [translatedPrescription, setTranslatedPrescription] = useState<PrescriptionItem[] | null>(null);
 
   const steps = [
     { id: 1, title: t('patient.steps.registered.title'), description: t('patient.steps.registered.description'), icon: CheckCircle2 },
@@ -58,8 +75,7 @@ export default function PatientStatusPage() {
       cumulativeDelay += duration;
       return setTimeout(() => {
         if (index + 2 === 5) {
-            // Simulate receiving prescription details at the end of the visit
-            setFinalPrescription("Paracetamol 500mg, twice a day for 3 days. Take with food.");
+            setFinalPrescription(finalPrescriptionData);
         }
         setCurrentStep(index + 2);
       }, cumulativeDelay);
@@ -70,14 +86,40 @@ export default function PatientStatusPage() {
 
   const handleSendMessage = () => {
     if (!message) return;
-    // In a real app, this would send the message to a backend.
-    // For this demo, we just show a confirmation toast.
     toast({
-        title: "Message Sent",
-        description: "Your message has been sent to the doctor.",
+        title: t('patient.message.sentTitle'),
+        description: t('patient.message.sentDescription'),
     });
     setMessage('');
   }
+  
+  const handleTranslatePrescription = async () => {
+    if (isTranslating || !finalPrescription.length) return;
+    setIsTranslating(true);
+    setTranslatedPrescription(null);
+
+    try {
+        const translatedItems: PrescriptionItem[] = [];
+        for (const item of finalPrescription) {
+            const textToTranslate = `${item.drug}&&${item.dosage}&&${item.notes}`;
+            const input: TranslateTextInput = { text: textToTranslate, targetLanguage: nationality };
+            const result = await translateText(input);
+            const [drug, dosage, notes] = result.translation.split('&&');
+            translatedItems.push({ drug, dosage, notes });
+        }
+        setTranslatedPrescription(translatedItems);
+    } catch (error) {
+        console.error("Prescription translation failed", error);
+        toast({
+            variant: "destructive",
+            title: "Translation Error",
+            description: "Could not translate the prescription.",
+        });
+    } finally {
+        setIsTranslating(false);
+    }
+  };
+
 
   const getStepVisuals = (stepId: number) => {
     if (stepId < currentStep) {
@@ -88,6 +130,8 @@ export default function PatientStatusPage() {
     }
     return { icon: <Circle className="text-muted-foreground" />, connector: "bg-border" };
   };
+
+  const prescriptionToDisplay = translatedPrescription || finalPrescription;
 
   return (
     <main className="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center bg-background p-4">
@@ -135,7 +179,7 @@ export default function PatientStatusPage() {
           )}
 
 
-          {currentStep >= 4 && !finalPrescription && (
+          {currentStep >= 4 && finalPrescription.length === 0 && (
             <div className="p-4 bg-accent/20 border border-accent rounded-lg text-center animate-in fade-in-50">
                 <h3 className="font-bold text-lg text-accent-foreground">{t('patient.action.title')}</h3>
                 <p className="text-muted-foreground mb-2">{t('patient.action.goToPharmacy')}</p>
@@ -144,12 +188,38 @@ export default function PatientStatusPage() {
             </div>
           )}
           
-          {finalPrescription && (
-             <div className="p-4 bg-primary/10 border border-primary/50 rounded-lg animate-in fade-in-50">
-                <h3 className="font-bold text-lg text-primary">{t('patient.prescription.title')}</h3>
-                <p className="text-muted-foreground">{t('patient.prescription.description')}</p>
-                <div className="mt-4 p-3 bg-background rounded-md">
-                    <p className="font-mono whitespace-pre-wrap">{finalPrescription}</p>
+          {finalPrescription.length > 0 && (
+             <div className="p-4 bg-primary/10 border border-primary/50 rounded-lg animate-in fade-in-50 space-y-4">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h3 className="font-bold text-lg text-primary">{t('patient.prescription.title')}</h3>
+                        <p className="text-muted-foreground">{t('patient.prescription.description')}</p>
+                    </div>
+                     <Button variant="outline" size="sm" onClick={handleTranslatePrescription} disabled={isTranslating}>
+                        <Languages className="mr-2 h-4 w-4" />
+                        {isTranslating ? t('patient.prescription.translatingButton') : t('patient.prescription.translateButton')}
+                    </Button>
+                </div>
+
+                <div className="mt-4 bg-background rounded-md border">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>{t('patient.prescription.drugHeader')}</TableHead>
+                                <TableHead>{t('patient.prescription.dosageHeader')}</TableHead>
+                                <TableHead>{t('patient.prescription.notesHeader')}</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {prescriptionToDisplay.map((item, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="font-medium">{item.drug}</TableCell>
+                                    <TableCell>{item.dosage}</TableCell>
+                                    <TableCell>{item.notes}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
           )}

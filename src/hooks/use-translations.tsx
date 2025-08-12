@@ -28,7 +28,9 @@ const translations = {
         message: {
             title: "Send a message to the doctor",
             description: "Describe your symptoms or ask a question.",
-            placeholder: "Type your message here..."
+            placeholder: "Type your message here...",
+            sentTitle: "Message Sent",
+            sentDescription: "Your message has been sent to the doctor.",
         },
         action: {
             title: "Action Required",
@@ -37,7 +39,12 @@ const translations = {
         },
         prescription: {
             title: "Doctor's Prescription",
-            description: "Please follow these instructions carefully."
+            description: "Please follow these instructions carefully.",
+            translateButton: "Translate",
+            translatingButton: "Translating...",
+            drugHeader: "Drug / Service",
+            dosageHeader: "Dosage",
+            notesHeader: "Notes",
         },
         feedback: {
             thankYou: "Thank You!",
@@ -71,7 +78,9 @@ const translations = {
         message: {
             title: "ارسال پیام به دکتر",
             description: "علائم خود را توصیف کنید یا سوالی بپرسید.",
-            placeholder: "پیام خود را اینجا تایپ کنید..."
+            placeholder: "پیام خود را اینجا تایپ کنید...",
+            sentTitle: "پیام ارسال شد",
+            sentDescription: "پیام شما برای دکتر ارسال شده است.",
         },
         action: {
             title: "اقدام لازم است",
@@ -80,7 +89,12 @@ const translations = {
         },
         prescription: {
             title: "نسخه پزشک",
-            description: "لطفا این دستورالعمل ها را با دقت دنبال کنید."
+            description: "لطفا این دستورالعمل ها را با دقت دنبال کنید.",
+            translateButton: "ترجمه",
+            translatingButton: "در حال ترجمه...",
+            drugHeader: "دارو / خدمات",
+            dosageHeader: "دوز",
+            notesHeader: "یادداشت ها",
         },
         feedback: {
             thankYou: "متشکرم!",
@@ -114,7 +128,9 @@ const translations = {
         message: {
             title: "أرسل رسالة إلى الطبيب",
             description: "صف أعراضك أو اطرح سؤالاً.",
-            placeholder: "اكتب رسالتك هنا..."
+            placeholder: "اكتب رسالتك هنا...",
+            sentTitle: "تم إرسال الرسالة",
+            sentDescription: "لقد تم إرسال رسالتك إلى الطبيب.",
         },
         action: {
             title: "الإجراء مطلوب",
@@ -123,7 +139,12 @@ const translations = {
         },
         prescription: {
             title: "وصفة الطبيب",
-            description: "يرجى اتباع هذه التعليمات بعناية."
+            description: "يرجى اتباع هذه التعليمات بعناية.",
+            translateButton: "ترجمة",
+            translatingButton: "جار الترجمة...",
+            drugHeader: "الدواء / الخدمة",
+            dosageHeader: "الجرعة",
+            notesHeader: "ملاحظات",
         },
         feedback: {
             thankYou: "شكرًا لك!",
@@ -157,7 +178,9 @@ const translations = {
         message: {
             title: "Doktora mesaj gönder",
             description: "Belirtilerinizi açıklayın veya bir soru sorun.",
-            placeholder: "Mesajınızı buraya yazın..."
+            placeholder: "Mesajınızı buraya yazın...",
+            sentTitle: "Mesaj Gönderildi",
+            sentDescription: "Mesajınız doktora gönderildi.",
         },
         action: {
             title: "Eylem Gerekli",
@@ -166,7 +189,12 @@ const translations = {
         },
         prescription: {
             title: "Doktor Reçetesi",
-            description: "Lütfen bu talimatları dikkatlice izleyin."
+            description: "Lütfen bu talimatları dikkatlice izleyin.",
+            translateButton: "Çevir",
+            translatingButton: "Çevriliyor...",
+            drugHeader: "İlaç / Hizmet",
+            dosageHeader: "Dozaj",
+            notesHeader: "Notlar",
         },
         feedback: {
             thankYou: "Teşekkürler!",
@@ -200,7 +228,9 @@ const translations = {
         message: {
             title: "ڈاکٹر کو پیغام بھیجیں",
             description: "اپنی علامات بیان کریں یا کوئی سوال پوچھیں۔",
-            placeholder: "اپنا پیغام یہاں ٹائپ کریں..."
+            placeholder: "اپنا پیغام یہاں ٹائپ کریں...",
+            sentTitle: "پیغام بھیج دیا گیا",
+            sentDescription: "آپ کا پیغام ڈاکٹر کو بھیج دیا گیا ہے۔",
         },
         action: {
             title: "کارروائی درکار ہے",
@@ -209,7 +239,12 @@ const translations = {
         },
         prescription: {
             title: "ڈاکٹر کا نسخہ",
-            description: "براہ کرم ان ہدایات پر احتیاط سے عمل کریں۔"
+            description: "براہ کرم ان ہدایات پر احتیاط سے عمل کریں۔",
+            translateButton: "ترجمہ کریں",
+            translatingButton: "ترجمہ کیا جا رہا ہے...",
+            drugHeader: "دوا / سروس",
+            dosageHeader: "خوراک",
+            notesHeader: "نوٹس",
         },
         feedback: {
             thankYou: "شکریہ!",

@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -97,6 +98,7 @@ export default function SupervisorPage() {
     };
 
   return (
+    <div>
       <div className="space-y-8">
         <h1 className="text-3xl font-bold tracking-tight">Supervisor's Dashboard</h1>
         
@@ -234,5 +236,6 @@ export default function SupervisorPage() {
                 </DialogFooter>
             </DialogContent>
         </Dialog>
+    </div>
   )
 }

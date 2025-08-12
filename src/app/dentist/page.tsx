@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea"
 import React from "react"
 import { useToast } from "@/hooks/use-toast"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Lightbulb, Languages, Tooth } from "lucide-react"
+import { Lightbulb, Languages } from "lucide-react"
 import { translateText, TranslateTextInput } from "@/ai/flows/translate-flow"
 import { checkPrescription, CheckPrescriptionInput, CheckPrescriptionOutput } from "@/ai/flows/prescription-flow"
 

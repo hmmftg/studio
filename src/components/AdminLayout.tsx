@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck, Tooth } from "lucide-react"
+import { ClipboardList, Stethoscope, Beaker, HeartPulse, User, LayoutDashboard, UserCheck } from "lucide-react"
 
 import {
   SidebarProvider,
@@ -26,11 +26,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+const ToothIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M9.34 2.4a3.24 3.24 0 0 1 5.32 0" />
+        <path d="M5.5 13.52a9.5 9.5 0 0 1 13 0" />
+        <path d="M18.8 19.3a1.71 1.71 0 0 1-2.3 1.4 1.71 1.71 0 0 1-1.3-2.3 3.93 3.93 0 0 0-4.4-4.5c-2.3.1-4.2 2-4.5 4.4a1.71 1.71 0 0 1-2.3 1.4 1.71 1.71 0 0 1-1.4-2.3 9.51 9.51 0 0 1 15.2-4.4Z" />
+    </svg>
+)
+
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/reception", label: "Reception", icon: ClipboardList },
   { href: "/doctor", label: "Doctor", icon: Stethoscope },
-  { href: "/dentist", label: "Dentist", icon: Tooth },
+  { href: "/dentist", label: "Dentist", icon: ToothIcon },
   { href: "/service/pharmacy", label: "Pharmacy", icon: HeartPulse },
   { href: "/service/lab", label: "Lab", icon: Beaker },
   { href: "/chairman", label: "Chairman", icon: UserCheck },

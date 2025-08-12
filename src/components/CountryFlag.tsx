@@ -19,7 +19,7 @@ const IraqFlag = () => (
         <rect width="24" height="18" fill="#fff"/>
         <rect width="24" height="6" fill="#ce1126"/>
         <rect width="24" height="6" y="12" fill="#000"/>
-        <text x="12" y="12.5" font-family="Kufi" font-size="7" text-anchor="middle" fill="#007a3d">الله أكبر</text>
+        <text x="12" y="12.5" fontFamily="Kufi" fontSize="7" textAnchor="middle" fill="#007a3d">الله أكبر</text>
     </svg>
 );
 

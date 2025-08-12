@@ -12,28 +12,119 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { getCountryFlag } from "@/components/CountryFlag"
+import { useState } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { PlusCircle } from "lucide-react"
 
-const newPatients = [
+const initialNewPatients = [
   { id: "p-001", name: "Alice Johnson", phone: "555-0101", time: "2 minutes ago", nationality: "Turkish" },
   { id: "p-002", name: "Bob Williams", phone: "555-0102", time: "5 minutes ago", nationality: "Iraqi" },
   { id: "p-003", name: "Carol White", phone: "555-0103", time: "8 minutes ago", nationality: "Pakistani" },
 ]
 
-const queue = [
+const initialQueue = [
   { id: "p-004", name: "David Green", service: "Healthcare", status: "Waiting for Doctor", time: "10:32 AM", nationality: "Iranian" },
   { id: "p-005", name: "Eve Black", service: "Dentistry", status: "Waiting for Doctor", time: "10:35 AM", nationality: "Turkish" },
 ]
 
+const nationalities = [
+    { value: "iranian", label: "Iranian" },
+    { value: "iraqi", label: "Iraqi" },
+    { value: "turkish", label: "Turkish" },
+    { value: "pakistani", label: "Pakistani" },
+    { value: "english", label: "English" },
+];
+
+
 export default function ReceptionPage() {
+    const [newPatients, setNewPatients] = useState(initialNewPatients)
+    const [queue, setQueue] = useState(initialQueue)
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [newPatientInfo, setNewPatientInfo] = useState({ name: '', phone: '', nationality: '' });
+
+    const handleAddPatient = () => {
+        if (!newPatientInfo.name || !newPatientInfo.phone || !newPatientInfo.nationality) return;
+
+        const newPatient = {
+            id: `p-${Math.random().toString(36).substr(2, 9)}`,
+            name: newPatientInfo.name,
+            phone: newPatientInfo.phone,
+            time: "Just now",
+            nationality: newPatientInfo.nationality,
+        };
+
+        setNewPatients(prev => [newPatient, ...prev]);
+        setNewPatientInfo({ name: '', phone: '', nationality: '' });
+        setIsDialogOpen(false);
+    }
+
+
   return (
     <>
       <div className="space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Reception Dashboard</h1>
         <div className="grid gap-8 pt-4">
             <Card>
-                <CardHeader>
-                    <CardTitle>New Registrations</CardTitle>
-                    <CardDescription>Patients who just registered and need to be assigned a service.</CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                        <CardTitle>New Registrations</CardTitle>
+                        <CardDescription>Patients who just registered and need to be assigned a service.</CardDescription>
+                    </div>
+                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button><PlusCircle className="mr-2 h-4 w-4" /> Manual Registration</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Manually Register Patient</DialogTitle>
+                                <DialogDescription>
+                                    Use this form for special cases or for patients unable to use the kiosk.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="name" className="text-right">Name</Label>
+                                    <Input id="name" value={newPatientInfo.name} onChange={(e) => setNewPatientInfo({...newPatientInfo, name: e.target.value})} className="col-span-3" />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="phone" className="text-right">Phone</Label>
+                                    <Input id="phone" value={newPatientInfo.phone} onChange={(e) => setNewPatientInfo({...newPatientInfo, phone: e.target.value})} className="col-span-3" />
+                                </div>
+                                 <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="nationality" className="text-right">Nationality</Label>
+                                    <Select onValueChange={(value) => setNewPatientInfo({...newPatientInfo, nationality: value})}>
+                                        <SelectTrigger className="col-span-3">
+                                            <SelectValue placeholder="Select nationality" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {nationalities.map(nat => (
+                                                <SelectItem key={nat.value} value={nat.label}>
+                                                   <div className="flex items-center gap-2">
+                                                        {getCountryFlag(nat.label)}
+                                                        <span>{nat.label}</span>
+                                                    </div>
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+                                <Button onClick={handleAddPatient}>Add Patient</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </CardHeader>
                 <CardContent>
                     <Table>
